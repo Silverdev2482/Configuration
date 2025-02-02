@@ -29,27 +29,30 @@
       mkHost = {
         system,
         hostname,
-        modules,
+        modules ? [],
         username,
       }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialAgs = {inherit inputs;};
+          specialArgs = {inherit inputs hostname;};
           modules =
             [
               ./hosts/${hostname}
               ./modules
+              ./modules/kanata
+              ./configuration.nix
               home-manager.nixosModules.home-manager
               {
-                networking.hostname = hostname;
+                networking.hostName = hostname;
                 home-manager = {
-                  extraSpecialArgs = {inherit inputs;};
+                  extraSpecialArgs = {inherit inputs hostname;};
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   users.${username} = {
                     imports = [
                       ./hosts/${hostname}/home.nix
                       ./modules/games.nix
+                      ./modules/hyprland
                     ];
                   };
                 };
@@ -66,6 +69,7 @@
         T480 = {
           inherit system;
           username = "silverdev2482";
+          modules = [];
         };
       };
   };

@@ -27,15 +27,8 @@
   games.enable = true;
   home.sessionPath = [ "./scripts" ];
 
+
   programs = {
-    neovim = {
-      viAlias = true;
-      vimAlias = true;
-      defaultEditor = true;
-      plugins = [
-        pkgs.vimPlugins.nvchad
-      ];
-    };
     git = {
       enable = true;
       userName = "silverdev2482";
@@ -66,11 +59,8 @@
         "rose-pine-cursor";
 
   home.file = {
-    ".config/sway/config".source = ./config/sway;
-    ".config/nvim/init.lua".source = ./config/init.lua;
-    ".config/discord/settings.json".source = ./config/discord.json;
-    ".config/hypr/hyprland.conf".source = ./config/hyprland.conf;
-    ".config/hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
+    ".config/discord/settings.json".source = ../../modules/misc/discord.json;
+    ".config/hypr/hyprpaper.conf".source = ../../modules/hyprland/hyprpaper.conf;
   };
 
   home.packages = with pkgs; [
