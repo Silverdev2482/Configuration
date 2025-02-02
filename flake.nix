@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     stardustxr.url = "github:StardustXR/server";
     fan.url = "github:Silverdev2482/fan";
@@ -14,78 +14,59 @@
     my-nvf.url = "github:silverdev2482/nvf";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , hyprland
-    , fan
-    , ...
-    }@inputs:
-    let
-      system = "x86_64-linux";
-    in
-    {
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
-      nixosConfigurations = {
-        let
-        mkHost = { system, hostname }: nixpkgs.lib.nixosSystem {
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    hyprland,
+    fan,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+  in {
+    formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
+    nixosConfigurations = let
+      mkHost = {
+        system,
+        hostname,
+        modules,
+        username,
+      }:
+        nixpkgs.lib.nixosSystem {
           inherit system;
-          specialAgs = { inherit inputs; };
-          modules = [ 
-            ./hosts/${hostname}
-            {
-              networking.hostname = hostname;
-            }
-          ]
-        };
-        in
-        builtins.mapAttrs ( system: hostname: mkHost ( system // { hostname = hostname; } )) {
-          Desktop-SD = {
-            modules = [
-              ./hardware-configuration.nix
-              ./configuration.nix
+          specialAgs = {inherit inputs;};
+          modules =
+            [
+              ./hosts/${hostname}
               ./modules
               home-manager.nixosModules.home-manager
               {
-               home-manager = {
-                  extraSpecialArgs = { inherit inputs; };
+                networking.hostname = hostname;
+                home-manager = {
+                  extraSpecialArgs = {inherit inputs;};
                   useGlobalPkgs = true;
                   useUserPackages = true;
-                  users.silverdev2482 = {
+                  users.${username} = {
                     imports = [
-                      ./home.nix
+                      ./hosts/${hostname}/home.nix
                       ./modules/games.nix
                     ];
                   };
                 };
               }
-            ];
-          };
+            ]
+            ++ modules;
         };
-        T480 = nixpkgs.lib.nixosSystem {
+    in
+      builtins.mapAttrs (hostname: system: mkHost (system // {inherit hostname;})) {
+        Desktop-SD = {
           inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hardware-configuration.nix
-            ./configuration.nix
-            ./modules
-            home-manager.nixosModules.home-manager
-            {
-             home-manager = {
-                extraSpecialArgs = { inherit inputs; };
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.silverdev2482 = {
-                  imports = [
-                    ./home.nix
-                    ./modules/games.nix
-                  ];
-                };
-              };
-            }
-          ];
+          username = "silverdev2482";
+        };
+        T480 = {
+          inherit system;
+          username = "silverdev2482";
         };
       };
-    };
+  };
 }

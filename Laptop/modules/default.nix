@@ -1,6 +1,0 @@
-{ ... }:
-{
-  imports = [
-    ./print-scan.nix
-  ];
-}
