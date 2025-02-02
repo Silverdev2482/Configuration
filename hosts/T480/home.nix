@@ -35,10 +35,8 @@
     };
   };
   home.file = {
-    ".config/sway/config".source = ./config/sway;
-    ".config/discord/settings.json".source = ./config/discord.json;
-    ".config/hypr/hyprland.conf".source = ./config/hyprland.conf;
-    ".config/hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
+    ".config/discord/settings.json".source = ../../modules/misc/discord.json;
+    ".config/hypr/hyprpaper.conf".source = ../../modules/hyprland/hyprpaper.conf;
   };
 
 
@@ -102,7 +100,7 @@
     keepassxc
     qpwgraph
     easyeffects
-    freecad
+#    freecad
     gimp
     prusa-slicer
     lxqt.pavucontrol-qt

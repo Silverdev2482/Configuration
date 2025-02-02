@@ -58,11 +58,11 @@
       rocmSupport = true;
     };
     overlays = [
-      (self: super: {
-        eww = super.eww.override {
-         withWayland = true;
-        };
-      })
+#      (self: super: {
+#        eww = super.eww.override {
+#         withWayland = true;
+#        };
+#      })
     ];
   };
 

@@ -7,6 +7,7 @@
 {
   boot = {
     extraModprobeConfig = "options thinkpad_acpi fan_control=1";
+    loader.efi.efiSysMountPoint = "/efi";
   };
 
 
