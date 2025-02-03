@@ -66,6 +66,10 @@
           inherit system;
           username = "silverdev2482";
         };
+        T14G2 = {
+          inherit system;
+          username = "silverdev2482";
+        };
         T480 = {
           inherit system;
           username = "silverdev2482";
