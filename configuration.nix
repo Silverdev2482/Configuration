@@ -140,13 +140,39 @@
     TTYVTDisallocate = true;
   };
 
-  programs.hyprland = {
-#    enable = true;
-    # set the flake package
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  };
+
+    security.pam.services = let
+      rules = {
+        unix = {
+          enable = true;
+          order = 150;
+          control = lib.mkForce "sufficient";
+          modulePath = "${pkgs.pam.outPath}/lib/security/pam_unix.so";
+        };
+        fprintd = {
+          enable = config.services.fprintd.enable;
+          order = 100;
+          control = lib.mkForce "sufficient";
+          modulePath = "${pkgs.fprintd.outPath}/lib/security/pam_fprintd.so";
+        };
+        wheelCheck = {
+          enable = true;
+          order = 50;
+          control = "[default=1 success=ignore]";
+          modulePath = "${pkgs.pam.outPath}/lib/security/pam_succeed_if.so";
+          args = [
+            "user"
+            "ingroup"
+            "wheel"
+          ];
+        };
+      };
+    in {
+      login.rules.auth = rules;
+      hyprlock.rules.auth = rules;
+      polkit-1.rules.auth = rules;
+    };
+
 
 
   xdg.portal = {
@@ -156,6 +182,22 @@
   };
 
   programs = {
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+      # set the flake package
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    };
+    uwsm = {
+      enable = true;
+      waylandCompositors.hyprland = {
+        prettyName = "Hyprland";
+        comment = "Hyprland compositor managed by UWSM";
+        binPath = "/run/current-system/sw/bin/Hyprland";
+      };
+    };
     coolercontrol.enable = true;
     fuse.userAllowOther = true;
     calls.enable = true;

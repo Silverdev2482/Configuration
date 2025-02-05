@@ -18,14 +18,8 @@
       powerKeyLongPress = "poweroff";
       extraConfig = "LidSwitchIgnoreInhibited=no";
     };
-#    fprintd = {
-#      enable = true;
-#      tod = {
-#        enable = true;
-#        driver = nixos-06cb-009a-fingerprint-sensor.lib.libfprint-2-tod1-vfs0090-bingch {
-#          calib-data-file = ./config/calib-data.bin;
-#        };
-#      };
-#    };
+    fprintd = {
+      enable = true;
+    };
   };
 }

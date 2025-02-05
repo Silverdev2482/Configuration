@@ -34,7 +34,7 @@
       }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = {inherit inputs hostname;};
+          specialArgs = {inherit inputs hostname username;};
           modules =
             [
               ./hosts/${hostname}
@@ -45,11 +45,12 @@
               {
                 networking.hostName = hostname;
                 home-manager = {
-                  extraSpecialArgs = {inherit inputs hostname;};
+                  extraSpecialArgs = {inherit inputs hostname username;};
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   users.${username} = {
                     imports = [
+                      ./home.nix
                       ./hosts/${hostname}/home.nix
                       ./modules/games.nix
                       ./modules/hyprland
