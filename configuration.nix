@@ -5,11 +5,6 @@
 { inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, ... }:
 
 {
-  virtualisation = {
-    waydroid.enable = true;
-    libvirtd.enable = true;
-  };
-
   # Bootloader
   boot = {
     supportedFilesystems = [ "bcachefs" "cifs" ];
@@ -100,7 +95,7 @@
   fileSystems."/home/silverdev2482/Mount/Router-Server" = {
     device = "//10.48.0.1/shares/";
     fsType = "cifs";
-    options = [ "gid=100" "uid=1000" "credentials=/home/silverdev2482/.config/smb-secrets" "x-systemd.automount" "x-systemd.idle-timeout=60" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
+    options = [ "gid=100" "uid=1000" "credentials=/home/silverdev2482/.config/smb-secrets" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
   };
 
   services = {
@@ -115,13 +110,12 @@
       restart = false;
       settings = {
         default_session = {
-	        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --time-format %Y/%m/%d-%H:%M:%S -c Hyprland";
+	        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --time-format %Y/%m/%d-%H:%M:%S";
 	        user = "greeter";
 	      };
       };
     };
 #    clight.enable = true;
-    blueman.enable = true;
     logind = {
       powerKey = "suspend";
       powerKeyLongPress = "poweroff";
@@ -209,6 +203,7 @@
 
   environment.systemPackages = with pkgs; [
 
+    fastfetch
     inputs.my-nvf.packages.x86_64-linux.default
     wgnord
     cifs-utils

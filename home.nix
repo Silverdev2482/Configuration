@@ -25,6 +25,17 @@
   games.enable = true;
   home.sessionPath = [ "./scripts" ];
 
+
+
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.kdePackages.breeze;
+    name = "Breeze";
+    size = 32;
+  };
+
   services = {
     unison = {
       enable = true;
@@ -62,6 +73,10 @@
       enable = true;
       userName = "silverdev2482";
       userEmail = "fidget1206@gmail.com";
+    };
+    kitty = {
+      enable = true;
+      theme = "Gruvbox Dark";
     };
   };
   home.file = {
