@@ -43,24 +43,27 @@
         Configuration = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Configuration" "/home/${username}/Configuration" ];
           commandOptions = {
+            retry = "3";
             batch = "true";
-            repeat = "watch";
+            repeat = "watch+30";
             ui = "text";
           };
         };
         Programming = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Programming" "/home/${username}/Programming" ];
           commandOptions = {
+            retry = "3";
             batch = "true";
-            repeat = "watch";
+            repeat = "watch+30";
             ui = "text";
           };
         };
         Sync = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Sync" "/home/${username}/Sync" ];
           commandOptions = {
+            retry = "3";
             batch = "true";
-            repeat = "watch";
+            repeat = "watch+30";
             ui = "text";
           };
         };

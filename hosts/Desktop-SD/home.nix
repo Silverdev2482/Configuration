@@ -62,7 +62,7 @@
     keepassxc
     qpwgraph
     easyeffects
-#    freecad
+    freecad
     gimp
     prusa-slicer
     lxqt.pavucontrol-qt
