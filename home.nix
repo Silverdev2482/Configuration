@@ -139,7 +139,7 @@
     # Desktop appplicatons
 
 #    qbittorrent
-    dolphin
+    kdePackages.dolphin
     filezilla
     firefox-wayland
     qalculate-gtk

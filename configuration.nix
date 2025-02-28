@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, ... }:
+{ inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, agenix, ... }:
 
 {
   # Bootloader
@@ -203,6 +203,7 @@
 
   environment.systemPackages = with pkgs; [
 
+    agenix.packages.x86_64-linux.default
     fastfetch
     inputs.my-nvf.packages.x86_64-linux.default
     wgnord
@@ -213,8 +214,7 @@
     fuse
     ntfs3g
     gnome-contacts
-    polkit-kde-agent
-    partition-manager
+    kdePackages.partitionmanager
     inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
     hyprpaper
     # CLI/TUI Tools
@@ -246,6 +246,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "unstable"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
 }

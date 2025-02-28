@@ -11,6 +11,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
     my-nvf.url = "github:silverdev2482/nvf";
   };
 
@@ -18,6 +19,7 @@
     self,
     nixpkgs,
     home-manager,
+    agenix,
     hyprland,
     fan,
     ...
@@ -34,7 +36,7 @@
       }:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = {inherit inputs hostname username;};
+          specialArgs = {inherit inputs hostname username agenix;};
           modules =
             [
               ./hosts/${hostname}
@@ -42,6 +44,7 @@
               ./modules/kanata
               ./configuration.nix
               home-manager.nixosModules.home-manager
+              agenix.nixosModules.default
               {
                 networking.hostName = hostname;
                 home-manager = {
