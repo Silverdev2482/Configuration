@@ -41,7 +41,7 @@
             [
               ./hosts/${hostname}
               ./modules
-              ./modules/kanata
+              ./workstation.nix
               ./configuration.nix
               home-manager.nixosModules.home-manager
               agenix.nixosModules.default
@@ -56,7 +56,7 @@
                       ./home.nix
                       ./hosts/${hostname}/home.nix
                       ./modules/games.nix
-                      ./modules/hyprland
+                      ./modules/hyprland/home.nix
                     ];
                   };
                 };

@@ -1,5 +1,13 @@
 { inputs, config, pkgs, lib, username, ... }:
 
+      let commandOptions = {
+            retry = "3";
+            batch = "true";
+            repeat = "watch+30";
+            ui = "text";
+          };
+      in
+ 
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -15,6 +23,7 @@
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "23.05";
+  hyprland-home.enable = true;
 
   systemd.user.services.mpris-proxy = {
     Unit.Description = "Mpris proxy";
@@ -39,33 +48,17 @@
   services = {
     unison = {
       enable = true;
-      pairs = {
+     pairs = {
         Configuration = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Configuration" "/home/${username}/Configuration" ];
-          commandOptions = {
-            retry = "3";
-            batch = "true";
-            repeat = "watch+30";
-            ui = "text";
-          };
+          inherit commandOptions;
         };
         Programming = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Programming" "/home/${username}/Programming" ];
-          commandOptions = {
-            retry = "3";
-            batch = "true";
-            repeat = "watch+30";
-            ui = "text";
-          };
-        };
+          inherit commandOptions;
         Sync = {
           roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Sync" "/home/${username}/Sync" ];
-          commandOptions = {
-            retry = "3";
-            batch = "true";
-            repeat = "watch+30";
-            ui = "text";
-          };
+          inherit commandOptions;
         };
       };
     };

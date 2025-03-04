@@ -21,4 +21,8 @@
       enable = true;
     };
   };
+  systemd.services.ModemManager = {
+    wantedBy = [ "multi-user.target" ];
+    scriptArgs = "--debug";
+  };
 }

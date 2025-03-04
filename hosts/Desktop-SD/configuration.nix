@@ -10,4 +10,5 @@
     acceleration = "rocm";
     rocmOverrideGfx = "10.3.2";
   };
+  nixpkgs.config.rocmSupport = true;
 }
