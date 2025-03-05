@@ -53,7 +53,6 @@
 
 #    qbittorrent
     deluge
-    dolphin
     filezilla
     firefox-wayland
     qalculate-gtk

@@ -1,12 +1,12 @@
-{ inputs, config, pkgs, hyprland, hostname, ... }: 
+{ inputs, config, pkgs, hyprland, hostname, lib, ... }: 
 
 {
-  options.hyprland-home.enable = {
-    type = lib.types.bool;
-    default = false;
-  };
+#  options.hyprland-home.enable = {
+#    type = lib.types.bool;
+#    default = false;
+#  };
 
-  config = lib.mkIf config.hyprland-home.enable {
+#  config = lib.mkIf config.hyprland-home.enable {
     home.packages = with pkgs; [ hyprpolkitagent hyprpaper dunst waybar ];
     systemd.user.targets.graphical-session.Unit.Wants = [ "hyprpolkitagent.service" "hyprpaper.service" "dunst.service" "waybar.service" ];
     wayland.windowManager.hyprland = {
@@ -16,5 +16,5 @@
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       systemd.enable = false;
     };
-  };
+#  };
 }
