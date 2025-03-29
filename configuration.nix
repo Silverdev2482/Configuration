@@ -11,4 +11,37 @@
   security = {
     sudo.wheelNeedsPassword = false;
   };
+
+  security.wrappers."mount.cifs" = {
+    program = "mount.cifs";
+    source = "${lib.getBin pkgs.cifs-utils}/bin/mount.cifs";
+    owner = "root";
+    group = "root";
+    setuid = true;
+  };
+
+  nix = {
+    extraOptions = "experimental-features = nix-command flakes";
+  };
+
+  programs.fuse.userAllowOther = true;
+
+  environment.systemPackages = with pkgs; [
+    nix-fast-build
+    irssi
+    agenix.packages.${pkgs.system}.default
+    sshuttle
+    fastfetch
+    inputs.my-nvf.packages.${pkgs.system}.default
+    btop
+    sshfs
+    gcc
+    acpi
+    lm_sensors
+    file
+    zip
+    git
+    usbutils
+    mosh
+  ];
 }

@@ -40,7 +40,6 @@
   };
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes";
     settings = {
       substituters = ["https://hyprland.cachix.org"];
       trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
@@ -168,7 +167,6 @@
       };
     };
     coolercontrol.enable = true;
-    fuse.userAllowOther = true;
     calls.enable = true;
     wireshark.enable = true;
     steam.enable = true;
@@ -178,10 +176,6 @@
 
   environment.systemPackages = with pkgs; [
 
-    agenix.packages.x86_64-linux.default
-    sshuttle
-    fastfetch
-    inputs.my-nvf.packages.x86_64-linux.default
     wgnord
     cifs-utils
     linux-wifi-hotspot
@@ -195,21 +189,11 @@
     hyprpaper
     # CLI/TUI Tools
 
-    neovim
-    btop
-    sshfs
-    gcc
-    acpi
-    lm_sensors
-    file
-    mosh
     tftp-hpa
-    unzip
-    git
-    zip
-    usbutils
     gnumake
     glxinfo
+    opentrack
+    aitrack
 
     chatty
     pkgsi686Linux.gperftools

@@ -87,6 +87,7 @@
     # TUI/CLI Tools and applications or any GUI application normally invoked from the command line
 
     ddcutil
+    signal-desktop
 #    anki
     discord-canary
     weechat
@@ -107,7 +108,6 @@
     pciutils
     jq
     grim
-    obs-studio
     neofetch
     nvtopPackages.intel
     packwiz
@@ -132,7 +132,6 @@
 
     # Desktop appplicatons
 
-#    qbittorrent
     kdePackages.dolphin
     filezilla
     firefox-wayland
@@ -158,6 +157,7 @@
 
     # Compositing
 
+    obs-studio
     obs-studio-plugins.obs-pipewire-audio-capture
     eww
     wayland
