@@ -151,6 +151,7 @@
     wireguard-tools
     mimalloc
     winetricks
+    wine64Packages.waylandFull
     glibc
     bluez
     blueman
