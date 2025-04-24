@@ -144,6 +144,7 @@
     gimp
     prusa-slicer
     element-desktop
+    zoom-us
 
     # Libraries/anything that I don't directly invoke
 
