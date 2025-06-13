@@ -26,6 +26,12 @@
   games.enable = true;
   home.sessionPath = [ "./scripts" ];
 
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
 
 
 
@@ -152,10 +158,12 @@
     wireguard-tools
     mimalloc
     winetricks
+    #winePackages.waylandFull
     wine64Packages.waylandFull
     glibc
     bluez
     blueman
+    harper
 
     # Compositing
 

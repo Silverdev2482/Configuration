@@ -3,7 +3,7 @@
 {
   users.users.silverdev2482 = {
     isNormalUser = true;
-    extraGroups = [ "video" "sys" "lp" "input" "networkmanager" "wheel" "plugdev" "libvirtd" "wireshark" "syncthing" ];
+    extraGroups = [ "video" "sys" "lp" "input" "networkmanager" "wheel" "plugdev" "libvirtd" "wireshark" "syncthing" "dialout" ];
   };
 
   time.timeZone = "US/Central";
@@ -27,6 +27,8 @@
   programs.fuse.userAllowOther = true;
 
   environment.systemPackages = with pkgs; [
+    unzip
+    zip
     nix-fast-build
     irssi
     agenix.packages.${pkgs.system}.default

@@ -16,5 +16,11 @@
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       systemd.enable = false;
     };
+    xdg.portal = {
+      extraPortals = [ inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland ];
+      config.hyprland = {
+        "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+      };
+    };
 #  };
 }

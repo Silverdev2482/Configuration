@@ -19,9 +19,19 @@
     kernelModules = [ "i2c-dev" "ddcci-driver" ];
   };
 
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu.swtpm.enable = true;
+    };
+    spiceUSBRedirection.enable = true;
+    waydroid.enable = true;
+  };
+
   zramSwap.enable = true;
 
   networking = {
+    firewall.enable = false;
     networkmanager.enable = true; # Enable networking
     networkmanager.wifi.backend = "iwd";
   };
@@ -63,7 +73,7 @@
   hardware = {
     i2c.enable = true;
     rtl-sdr.enable = true;
-    graphics.extraPackages = [ pkgs.mesa.drivers ];
+    graphics.extraPackages = [ pkgs.mesa ];
     bluetooth.enable = true;
   };
 
@@ -177,6 +187,7 @@
 
   environment.systemPackages = with pkgs; [
 
+    virt-manager
     wgnord
     cifs-utils
     linux-wifi-hotspot

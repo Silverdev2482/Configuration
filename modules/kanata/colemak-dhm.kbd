@@ -31,7 +31,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    f    p    b    j    l    u    y    ;    [    ]    \
   bspc a    r    s    t    g    m    n    e    i    o    '    ret
-  @shl x    c    d    v    z    k    h    ,    .    /    @shr
+  lsft x    c    d    v    z    k    h    ,    .    /    rsft
   lctl lalt lmet           spc            @num ralt rctl
 )
 
