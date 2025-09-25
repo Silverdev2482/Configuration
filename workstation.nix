@@ -104,7 +104,6 @@
     logind = {
       powerKey = "suspend";
       powerKeyLongPress = "poweroff";
-      extraConfig = "LidSwitchIgnoreInhibited=no";
     };
   };
 

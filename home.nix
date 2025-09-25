@@ -133,7 +133,6 @@
     pwvucontrol
     texliveFull
     sl
-    python313Full
     traceroute
 
     # Desktop appplicatons
