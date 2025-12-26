@@ -10,12 +10,13 @@
 #    loader.efi.efiSysMountPoint = "/efi/EFI/";
   };
 
+#  time.timeZone = lib.mkForce "US/Mountain";
+
 
   services = {
     logind = {
       powerKey = "suspend";
       powerKeyLongPress = "poweroff";
-      extraConfig = "LidSwitchIgnoreInhibited=no";
     };
     fprintd = {
       enable = true;
@@ -25,4 +26,12 @@
     wantedBy = [ "multi-user.target" ];
     scriptArgs = "--debug";
   };
+
+  fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
+    device = "//10.48.0.1/shares/";
+    fsType = "cifs";
+    options = [ "gid=100" "uid=1000" "credentials=/home/Silverdev2482/.config/smb-secrets" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
+  };
+
+
 }

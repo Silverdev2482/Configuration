@@ -5,10 +5,11 @@
 { inputs, config, pkgs, lib, ... }:
 
 {
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-    rocmOverrideGfx = "10.3.2";
-  };
   nixpkgs.config.rocmSupport = true;
+
+  fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
+    device = "10.48.64.1:/srv/shares";
+    fsType = "nfs";
+    options = [ "proto=rdma" "vers=3" "acl" ];
+  };
 }

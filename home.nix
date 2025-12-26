@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "silverdev2482";
-  home.homeDirectory = "/home/silverdev2482";
+  home.username = "Silverdev2482";
+  home.homeDirectory = "/home/Silverdev2482";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -56,15 +56,15 @@
       enable = true;
       pairs = {
         Configuration = {
-         roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Configuration" "/home/${username}/Configuration" ];
+         roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Configuration" "/home/${username}/Configuration" ];
          inherit commandOptions;
         };
         Programming = {
-          roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Programming" "/home/${username}/Programming" ];
+          roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Programming" "/home/${username}/Programming" ];
           inherit commandOptions;
         };
         Sync = {
-          roots = [ "ssh://208.107.201.148//srv/shares/Users/Silverdev2482/Sync" "/home/${username}/Sync" ];
+          roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Sync" "/home/${username}/Sync" ];
           inherit commandOptions;
         };
       };
@@ -74,12 +74,14 @@
   programs = {
     git = {
       enable = true;
-      userName = "silverdev2482";
-      userEmail = "fidget1206@gmail.com";
+      settings = {
+#        userName = "Silverdev2482";
+#        userEmail = [ "fidget1206@gmail.com" ];
+      };
     };
     kitty = {
       enable = true;
-      theme = "Gruvbox Dark";
+      themeFile = "gruvbox-dark";
     };
   };
   home.file = {
@@ -95,14 +97,14 @@
     ddcutil
     signal-desktop
 #    anki
-    discord-canary
+    vesktop
     weechat
     brightnessctl # Controling brightnesses
     moonlight-qt
     mangohud
     inputs.fan.packages.${pkgs.system}.fan
     glow
-    poppler_utils
+    poppler-utils
     libsForQt5.breeze-icons
     localsend
     mmsd-tng
@@ -121,7 +123,6 @@
     yt-dlp
     nvd
     nix-index
-    ipfs
     mpv
     patchelf
     libqalculate
@@ -139,7 +140,7 @@
 
     kdePackages.dolphin
     filezilla
-    firefox-wayland
+    firefox
     qalculate-gtk
     kitty
     keepassxc

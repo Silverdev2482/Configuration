@@ -1,15 +1,56 @@
 { inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, agenix, ... }:
 
 {
-  users.users.silverdev2482 = {
-    isNormalUser = true;
-    extraGroups = [ "video" "sys" "lp" "input" "networkmanager" "wheel" "plugdev" "libvirtd" "wireshark" "syncthing" "dialout" ];
+  users = {
+    users.Silverdev2482 = {
+      isNormalUser = true;
+      extraGroups = [ "video" "sys" "lp" "input" "networkmanager" "wheel" "plugdev" "libvirtd" "wireshark" "syncthing" "dialout" "rdma" "share" ];
+    };
+    groups.share = {
+      gid = 994;
+    };
+    groups.i2c = {
+      gid = 980;
+    };
   };
+
+  boot = {
+    supportedFilesystems = [ "bcachefs" "cifs" "nfs" ];
+    loader = {
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+      };
+      efi.canTouchEfiVariables = true;
+    };
+    extraModulePackages = [ ];
+    kernelModules = [ "i2c-dev" "ddcci-driver" ];
+  };
+
+  zramSwap.enable = true;
 
   time.timeZone = "US/Central";
 
   security = {
+    polkit.enable = true;
+  };
+
+  security = {
     sudo.wheelNeedsPassword = false;
+  };
+
+  hardware.infiniband.enable = true;
+
+  services = {
+    openssh = {
+      enable = true;
+    };
+  };
+
+  programs = {
+    mosh.enable = true;
+    fuse.userAllowOther = true;
   };
 
   security.wrappers."mount.cifs" = {
@@ -24,9 +65,13 @@
     extraOptions = "experimental-features = nix-command flakes";
   };
 
-  programs.fuse.userAllowOther = true;
 
   environment.systemPackages = with pkgs; [
+    wgnord
+    cifs-utils
+    tftp-hpa
+    qperf
+    rdma-core
     unzip
     zip
     nix-fast-build

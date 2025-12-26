@@ -5,19 +5,6 @@
 { inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, agenix, ... }:
 
 {
-  # Bootloader
-  boot = {
-    supportedFilesystems = [ "bcachefs" "cifs" ];
-    loader = {
-      grub = {
-        efiSupport = true;
-        device = "nodev";
-      };
-      efi.canTouchEfiVariables = true;
-    };
-    extraModulePackages = [ ];
-    kernelModules = [ "i2c-dev" "ddcci-driver" ];
-  };
 
   virtualisation = {
     libvirtd = {
@@ -28,12 +15,14 @@
     waydroid.enable = true;
   };
 
-  zramSwap.enable = true;
-
   networking = {
     firewall.enable = false;
     networkmanager.enable = true; # Enable networking
     networkmanager.wifi.backend = "iwd";
+  };
+  services.clatd = {
+    enable = true;
+    enableNetworkManagerIntegration = true;
   };
 
   home-manager.backupFileExtension = "hmbak";
@@ -56,9 +45,6 @@
     };
   };
 
-  security = {
-    polkit.enable = true;
-  };
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;
@@ -77,33 +63,24 @@
     bluetooth.enable = true;
   };
 
-  fileSystems."/home/silverdev2482/Mount/Router-Server" = {
-    device = "//10.48.0.1/shares/";
-    fsType = "cifs";
-    options = [ "gid=100" "uid=1000" "credentials=/home/silverdev2482/.config/smb-secrets" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
-  };
-
   services = {
     flatpak.enable = true;
     fwupd.enable = true;
     dbus.enable = true;
-    openssh = {
-      enable = true;
-    };
     greetd = {
       enable = true;
       restart = false;
       settings = {
         default_session = {
-	        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --time-format %Y/%m/%d-%H:%M:%S";
+	        command = "${pkgs.tuigreet}/bin/tuigreet --user-menu --time --time-format %Y/%m/%d-%H:%M:%S";
 	        user = "greeter";
 	      };
       };
     };
 #    clight.enable = true;
-    logind = {
-      powerKey = "suspend";
-      powerKeyLongPress = "poweroff";
+    logind.settings.Login = {
+      handlePowerKey = "suspend";
+      handlePowerKeyLongPress = "poweroff";
     };
   };
 
@@ -155,7 +132,9 @@
   xdg.portal = {
     enable = true;
     config.common.default = "*";
-    extraPortals = [ inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland ];
+    extraPortals = [
+#      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
+    ];
   };
 
   programs = {
@@ -164,9 +143,9 @@
       enable = true;
       withUWSM = true;
       # set the flake package
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+#      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       # make sure to also set the portal package, so that they are in sync
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+#      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
     uwsm = {
       enable = true;
@@ -181,16 +160,13 @@
     wireshark.enable = true;
     steam.enable = true;
     dconf.enable = true;
-    mosh.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
 
     virt-manager
-    wgnord
-    cifs-utils
     linux-wifi-hotspot
-    greetd.tuigreet
+    tuigreet
     networkmanagerapplet
     fuse
     ntfs3g
@@ -200,9 +176,7 @@
     hyprpaper
     # CLI/TUI Tools
 
-    tftp-hpa
     gnumake
-    glxinfo
     opentrack
     aitrack
 
