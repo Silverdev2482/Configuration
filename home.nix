@@ -75,8 +75,10 @@
     git = {
       enable = true;
       settings = {
-#        userName = "Silverdev2482";
-#        userEmail = [ "fidget1206@gmail.com" ];
+        user = {
+          name = "Silverdev2482";
+          email = "fidget1206@gmail.com";
+        };
       };
     };
     kitty = {
@@ -94,6 +96,7 @@
   home.packages = with pkgs; [
     # TUI/CLI Tools and applications or any GUI application normally invoked from the command line
 
+    eza
     ddcutil
     signal-desktop
 #    anki

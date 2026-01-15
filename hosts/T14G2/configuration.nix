@@ -14,10 +14,6 @@
 
 
   services = {
-    logind = {
-      powerKey = "suspend";
-      powerKeyLongPress = "poweroff";
-    };
     fprintd = {
       enable = true;
     };

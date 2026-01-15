@@ -64,6 +64,7 @@
   };
 
   services = {
+    tailscale.enable = true;
     flatpak.enable = true;
     fwupd.enable = true;
     dbus.enable = true;
