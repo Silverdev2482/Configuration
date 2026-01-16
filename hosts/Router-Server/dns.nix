@@ -26,7 +26,7 @@
       zones = {
         "kf0nlr.radio" = {
           master = true;
-          file = "/etc/bind/zones/kf0nlr.radio.zone";
+          file = "/etc/bind/zones/kf0nlr.radio.internal.zone";
           # extraConfig = "allow-update { key rfc2136key.${fqdn}.; };";
         };
       };
@@ -40,7 +40,7 @@
     chown named:named /etc/bind
   '';
 
-  environment.etc."bind/zones/kf0nlr.radio.zone" = {
+  environment.etc."bind/zones/kf0nlr.radio.internal.zone" = {
     enable = true;
     user = "named";
     group = "named";

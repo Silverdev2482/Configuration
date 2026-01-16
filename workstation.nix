@@ -73,7 +73,7 @@
       restart = false;
       settings = {
         default_session = {
-	        command = "${pkgs.tuigreet}/bin/tuigreet --user-menu --time --time-format %Y/%m/%d-%H:%M:%S";
+	        command = "${pkgs.tuigreet}/bin/tuigreet --user-menu --remember --time --time-format %Y/%m/%d-%H:%M:%S";
 	        user = "greeter";
 	      };
       };

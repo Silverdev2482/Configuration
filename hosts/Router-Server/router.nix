@@ -351,7 +351,7 @@ in
   networking = {
     wireguard.interfaces = {
       commercial-vpn = {
-        privateKey = builtins.readFile "/srv/secrets/commercial-vpn.key";
+        privateKeyFile = config.age.secrets.commercial-vpn-private-key.path;
 
         interfaceNamespace = "vpn";
         ips = [
@@ -363,7 +363,7 @@ in
             publicKey = "PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=";
             # us3.ipv6.vpn.airdns.org   dns doesn't resolve early, easier than specifing unit order.
             endpoint = "[2606:6080:1001:13:4f5e:882e:f2b6:df9f]:51820";
-            presharedKey = builtins.readFile "/srv/secrets/commercial-vpn.presharedkey";
+            presharedKeyFile = config.age.secrets.commercial-vpn-preshared-key.path;
             persistentKeepalive = 25;
             allowedIPs = [
               "0.0.0.0/0"
@@ -374,7 +374,7 @@ in
       };
       lan-vpn = {
         # Public key is: +k1Ly60puFUTM39Ds4efy9ZMoCynnLmu0wErsaJvpls=
-        privateKeyFile = "/etc/nixos/secrets/router-vpn.key";
+        privateKeyFile = config.age.secrets.router-vpn-private-key.path;
         listenPort = 51820;
 
         ips = [
@@ -457,7 +457,7 @@ in
             ];
       };
       wan-direct-vpn = {
-        privateKey = builtins.readFile "/srv/secrets/router-vpn.key";
+        privateKeyFile = config.age.secrets.router-vpn-private-key.path;
         listenPort = 51821;
 
         ips = [
@@ -508,7 +508,7 @@ in
             ];
       };
       russian-vpn = {
-        privateKey = builtins.readFile "/srv/secrets/router-vpn.key";
+        privateKeyFile = config.age.secrets.router-vpn-private-key.path;
         listenPort = 51822;
         type = "amneziawg";
         mtu = 1376;

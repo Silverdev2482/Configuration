@@ -60,6 +60,8 @@
               ./hosts/${hostname}
               ./modules
               ./configuration.nix
+              ./users.nix
+              ./secrets/agenix.nix
               home-manager.nixosModules.home-manager
               agenix.nixosModules.default
               inputs.nixos-router.nixosModules.default

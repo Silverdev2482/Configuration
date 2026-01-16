@@ -1,18 +1,6 @@
 { inputs, config, pkgs, lib, nixos-06cb-009a-fingerprint-sensor, home-manager, agenix, ... }:
 
 {
-  users = {
-    users.Silverdev2482 = {
-      isNormalUser = true;
-      extraGroups = [ "video" "sys" "lp" "input" "networkmanager" "wheel" "plugdev" "libvirtd" "wireshark" "syncthing" "dialout" "rdma" "share" ];
-    };
-    groups.share = {
-      gid = 994;
-    };
-    groups.i2c = {
-      gid = 980;
-    };
-  };
 
   boot = {
     supportedFilesystems = [ "bcachefs" "cifs" "nfs" ];
