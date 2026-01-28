@@ -106,8 +106,8 @@ table inet global {
     } accept
 
  
-    ip6 saddr & ::f:ffff:ffff:ffff:ffff == ::1:0 jump minecraft
-    ip daddr 10.48.0.128 jump minecraft
+#    ip6 saddr & ::f:ffff:ffff:ffff:ffff == ::1:0 jump minecraft
+#    ip daddr 10.48.0.128 jump minecraft
 
     ct state vmap { established : accept, related : accept, invalid : drop }
   }

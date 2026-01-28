@@ -211,18 +211,27 @@ in
                 pools = [ { pool = "10.48.1.2 - 10.48.1.254"; } ];
                 reservations = [
                   {
+                    # Old minecraft server
                     hw-address = "48:4D:7E:F9:06:7A";
                     ip-address = "10.48.0.128";
                   }
                   {
+                    # I think the raspberry pi for my ender 3?
                     hw-address = "DC:A6:32:14:6F:83";
                     ip-address = "10.48.0.129";
                   }
                   {
+                    # Printer
+                    hw-address = "F0:A6:54:88:DE:8F";
+                    ip-address = "10.48.0.130";
+                  }
+                  {
+                    # Access point
                     hw-address = "D4:5D:64:7B:6B:60";
                     ip-address = "10.48.0.64";
                   }
                   {
+                    # Access point
                     hw-address = "0C:9D:92:2C:4D:10";
                     ip-address = "10.48.0.65";
                   }
@@ -334,7 +343,7 @@ in
           # Allows me to do traffic shaping on ingress
           ip link add wan0-ifb type ifb
           ip link set wan0-ifb up
-          tc qdisc add dev eth0 handle ffff: ingress
+          tc qdisc add dev br0 handle ffff: ingress
           sudo tc filter add dev wan0 parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev wan0-ifb
 
           # Ingress traffic shaping

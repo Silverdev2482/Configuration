@@ -8,7 +8,7 @@ let
   ];
   
   secrets = lib.genAttrs secretNames (name: {
-    file = ./secrets/${name}.age;
+    file = ./${name}.age;
   });
 in
 {

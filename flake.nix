@@ -11,6 +11,7 @@
     my-nvf.url = "github:silverdev2482/nvf";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nixos-router.url = "github:chayleaf/nixos-router";
+    elyprismlauncher.url = "github:ElyPrismLauncher/ElyPrismLauncher";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unpatched";
@@ -38,6 +39,7 @@
           inputs.openThreadBoarderRouterInitPatch
         ];
       };
+      pkgs = import nixpkgs { inherit system; };
       patchedNixOS = import (nixpkgs + /nixos/lib/eval-config.nix);
   in {
 #    formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
@@ -70,7 +72,7 @@
                 networking.hostName = hostname;
               }
             ]
-            ++ nixpkgs-unpatched.lib.optionals ( type == "workstation" ) [
+            ++ pkgs.lib.optionals ( type == "workstation" ) [
               ./workstation.nix
               {
                 home-manager = {

@@ -106,6 +106,7 @@
     moonlight-qt
     mangohud
     inputs.fan.packages.${pkgs.system}.fan
+    inputs.elyprismlauncher.packages.${pkgs.system}.prismlauncher
     glow
     poppler-utils
     libsForQt5.breeze-icons
