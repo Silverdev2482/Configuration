@@ -45,10 +45,6 @@
     };
   };
 
-  nix.settings = {
-    extra-sandbox-paths = [ "/srv/secrets" ];
-  };
-
   security.polkit = {
     extraConfig = ''
       polkit.addRule(function(action, subject) {
@@ -225,11 +221,6 @@
       host = "";
     };
     jellyfin.enable = true;
-    pixiecore = {
-      enable = false;
-      dhcpNoBind = true;
-      kernel = "https://boot.netboot.xyz";
-    };
     postgresql = {
       enable = true;
       enableTCPIP = true;

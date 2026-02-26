@@ -1,5 +1,10 @@
 { inputs, config, pkgs, lib, username, ... }:
 
+let
+
+in
+
+
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -43,31 +48,31 @@
     size = 32;
   };
 
-  services = 
-    let 
-      commandOptions = {
-        retry = "3";
-        batch = "true";
-        repeat = "watch+30";
-        ui = "text";
-      };
-    in {
+  services = let 
+    mkUnison =
+      {
+        directory
+      }:
+      {
+        ${directory} = {
+           roots = [ "ssh://kf0nlr.radio//srv/shares/Users/${username}/${directory}" "/home/${username}/${directory}" ];
+            commandOptions = {
+              retry = "3";
+              batch = "true";
+              repeat = "watch+30";
+              ui = "text";
+            };
+          };
+        };
+  in
+  {
     unison = {
       enable = true;
-      pairs = {
-        Configuration = {
-         roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Configuration" "/home/${username}/Configuration" ];
-         inherit commandOptions;
-        };
-        Programming = {
-          roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Programming" "/home/${username}/Programming" ];
-          inherit commandOptions;
-        };
-        Sync = {
-          roots = [ "ssh://208.107.235.245//srv/shares/Users/Silverdev2482/Sync" "/home/${username}/Sync" ];
-          inherit commandOptions;
-        };
-      };
+      pairs = 
+        mkUnison { directory = "Configuration"; } //
+        mkUnison { directory = "Programming"; } //
+        mkUnison { directory = "Sync"; }
+      ;
     };
   };
 
@@ -106,7 +111,6 @@
     moonlight-qt
     mangohud
     inputs.fan.packages.${pkgs.system}.fan
-    inputs.elyprismlauncher.packages.${pkgs.system}.prismlauncher
     glow
     poppler-utils
     libsForQt5.breeze-icons

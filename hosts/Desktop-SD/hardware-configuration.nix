@@ -21,7 +21,7 @@
   fileSystems."/boot" =
     { device = "/dev/disk/by-partlabel/EFIBOOT";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [ "fmask=0022" "dmask=0022" "nofail" ];
     };
 
   swapDevices = [ ];

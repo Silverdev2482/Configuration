@@ -20,6 +20,10 @@
       url = "https://github.com/nixos/nixpkgs/pull/332296.patch";
       flake = false;
     };
+    mstpdPatch = {
+      url = "https://github.com/nixos/nixpkgs/pull/476636.patch";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -37,6 +41,7 @@
         src = nixpkgs-unpatched;
         patches = [
           inputs.openThreadBoarderRouterInitPatch
+#          inputs.mstpdPatch
         ];
       };
       pkgs = import nixpkgs { inherit system; };
@@ -102,6 +107,9 @@
           modules = [];
         };
         Router-Server = {
+          type = "server";
+        };
+        VPN-VPS = {
           type = "server";
         };
       };

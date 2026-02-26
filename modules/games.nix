@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ inputs, lib, pkgs, config, ... }:
 {
   options = {
     games.enable = lib.mkOption {
@@ -12,6 +12,7 @@
       steam
       superTux
       prismlauncher
+      inputs.elyprismlauncher.packages.${pkgs.system}.prismlauncher
       superTuxKart
       lutris
       protonup-qt

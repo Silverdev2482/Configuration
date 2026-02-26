@@ -31,6 +31,7 @@
   hardware.infiniband.enable = true;
 
   services = {
+    mstpd.enable = true;
     openssh = {
       enable = true;
     };
