@@ -23,11 +23,12 @@
         "149.112.112.112" # Quad9 Backup
       ];
       cacheNetworks = addresses.internalAddresses;
+      extraConfig = ''include "${config.age.secrets.bind-acme-key.path}";'';
       zones = {
         "kf0nlr.radio" = {
           master = true;
           file = "/etc/bind/zones/kf0nlr.radio.internal.zone";
-          # extraConfig = "allow-update { key rfc2136key.${fqdn}.; };";
+          extraConfig = "allow-update { key acme-key; };";
         };
       };
     };
@@ -74,6 +75,9 @@
 
       qbittorrent-private.services IN A    10.48.0.1
       qbittorrent-private.services IN AAAA ${addresses.router.ULAAddress}
+
+      jellyfin.services IN A    10.48.0.1
+      jellyfin.services IN AAAA ${addresses.router.ULAAddress}
 
       home-assistant.services IN A    10.48.0.1
       home-assistant.services IN AAAA ${addresses.router.ULAAddress}

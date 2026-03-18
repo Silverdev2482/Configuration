@@ -8,10 +8,20 @@
 }:
 
 {
+  boot = {
+    loader = {
+      grub = {
+        efiSupport = lib.mkForce false;
+        device = lib.mkForce "/dev/vda";
+      };
+    };
+  };
+
+
   security = {
     sudo.wheelNeedsPassword = false;
   };
-  network = {
+  networking = {
     networkmanager.enable = true;
     firewall.enable = false;
   };

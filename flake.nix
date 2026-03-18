@@ -98,7 +98,7 @@
             ++ modules;
         };
     in
-      builtins.mapAttrs (hostname: system: mkHost (system // {inherit hostname system;})) {
+      builtins.mapAttrs (hostname: hostConfig: mkHost (hostConfig // {inherit hostname;})) {
         Desktop-SD = {
         };
         T14G2 = {

@@ -13,6 +13,8 @@ let
     "router-vpn-private-key.age"
     "commercial-vpn-private-key.age"
     "commercial-vpn-preshared-key.age"
+    "acme-key.age"
+    "bind-acme-key.age"
   ];
 
 in  builtins.listToAttrs (map (name: { inherit name; value = { inherit publicKeys; }; }) secrets)

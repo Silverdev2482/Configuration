@@ -5,11 +5,15 @@ let
     "router-vpn-private-key"
     "commercial-vpn-preshared-key"
     "commercial-vpn-private-key"
+    "bind-acme-key"
+    "acme-key"
   ];
   
-  secrets = lib.genAttrs secretNames (name: {
-    file = ./${name}.age;
-  });
+  secrets = lib.recursiveUpdate
+    (lib.genAttrs secretNames (name: {
+      file = ./${name}.age;
+    }))
+    { bind-acme-key.owner = "named"; };
 in
 {
   age = {

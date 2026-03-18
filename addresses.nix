@@ -61,10 +61,10 @@ rec {
     v4Prefix = "10.48.160";
     v4Space = "10.48.160.0/24";
 
-    ULAPrefix = all.ULAPrefix + ":4";
-    ULASpace = all.ULAPrefix + ":4::/64";
-    PDPrefix = all.PDPrefix + "4";
-    PDSpace = all.PDPrefix + "4::/64";
+    ULAPrefix = all.ULAPrefix + ":5";
+    ULASpace = all.ULAPrefix + ":5::/64";
+    PDPrefix = all.PDPrefix + "5";
+    PDSpace = all.PDPrefix + "5::/64";
   };
 
   internalAddresses = [

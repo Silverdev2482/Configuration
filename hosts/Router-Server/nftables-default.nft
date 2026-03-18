@@ -42,6 +42,8 @@ table inet global {
     tcp dport 22 accept # ssh
     udp dport 60000-61000 accept # mosh
 
+    tcp dport 80 accept
+    udp dport 80 accept
     tcp dport 443 accept
     udp dport 443 accept
 

@@ -251,7 +251,7 @@
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
           locations."/" = {
-            proxyPass = "http://[fd99:2673:4614:4::2]:56080/";
+            proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:56080/";
             extraConfig = ''
               allow 127.0.0.0/8; 
               allow ::1/128;
@@ -272,7 +272,7 @@
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
           locations."/" = {
-            proxyPass = "http://[fd99:2673:4614:4::2]:8080/";
+            proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:8080/";
             extraConfig = ''
               allow 127.0.0.0/8; 
               allow ::1/128;
@@ -286,6 +286,24 @@
               proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
               proxy_set_header   X-Forwarded-Host   $http_host;
               proxy_set_header   X-Forwarded-Proto  $scheme;
+            '';
+          };
+        };
+        "jellyfin.services.kf0nlr.radio" = {
+          forceSSL = true;
+          useACMEHost = "kf0nlr.radio";
+          locations."/" = {
+            proxyPass = "http://[::1]:8096";
+            proxyWebsockets = true;
+            extraConfig = ''
+              allow 127.0.0.0/8; 
+              allow ::1/128;
+              allow ${addresses.all.v4Space};
+              allow ${addresses.all.PDSpace};
+              allow ${addresses.all.ULASpace};
+              deny all; # Deny all other IPs
+
+              proxy_buffering off;
             '';
           };
         };
@@ -335,10 +353,10 @@
     certs."kf0nlr.radio" = {
       group = "nginx";
       email = "fidget1206@gmail.com";
-      dnsResolver = "1.1.1.1";
-      dnsProvider = "hurricane";
+      dnsResolver = "::1";
+      dnsProvider = "rfc2136";
       dnsPropagationCheck = false;
-      environmentFile = "/srv/secrets/certs";
+      environmentFile = config.age.secrets.acme-key.path;
       extraDomainNames = [
         "*.kf0nlr.radio"
         "*.services.kf0nlr.radio"
