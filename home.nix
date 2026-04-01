@@ -79,6 +79,7 @@ in
   programs = {
     git = {
       enable = true;
+      signing.format = "openpgp";
       settings = {
         user = {
           name = "Silverdev2482";
@@ -90,10 +91,33 @@ in
       enable = true;
       themeFile = "gruvbox-dark";
     };
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+
+      shellAliases = {
+        rm = "rmxt";
+        ls = "eza";
+      };
+      history.size = 10000;
+      zplug = {
+        enable = true;
+        plugins = [
+#          { name = "zsh-users/zsh-autosuggestions"; } # Simple plugin installation
+#          { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; } # Installations with additional options. For the list of options, please refer to Zplug README.
+        ];
+      };
+#      initContent = ''
+#        source ~/.config/p10k/p10k.zsh
+#      '';
+    };
   };
   home.file = {
     ".config/discord/settings.json".source = ./modules/misc/discord.json;
     ".config/hypr/hyprpaper.conf".source = ./modules/hyprland/hyprpaper.conf;
+    ".config/p10k/p10k.zsh".source = ./files/p10k.zsh;
   };
 
 
@@ -124,7 +148,6 @@ in
     pciutils
     jq
     grim
-    neofetch
     nvtopPackages.intel
     packwiz
     zathura

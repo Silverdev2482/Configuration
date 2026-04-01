@@ -16,6 +16,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unpatched";
     };
+    rmxt.url = "github:santoshxshrestha/rmxt";
     openThreadBoarderRouterInitPatch = {
       url = "https://github.com/nixos/nixpkgs/pull/332296.patch";
       flake = false;

@@ -24,6 +24,7 @@
       ];
       cacheNetworks = addresses.internalAddresses;
       extraConfig = ''include "${config.age.secrets.bind-acme-key.path}";'';
+      checkConfig = false;
       zones = {
         "kf0nlr.radio" = {
           master = true;

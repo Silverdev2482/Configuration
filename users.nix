@@ -48,6 +48,11 @@
         isNormalUser = true;
         extraGroups = [ "share" ];
       };
+      
+      Guest = {
+        isNormalUser = true;
+        group = "guest";
+      };
 
       TheRealmer = {
         isNormalUser = true;

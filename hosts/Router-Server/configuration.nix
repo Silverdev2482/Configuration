@@ -241,6 +241,10 @@
           root = "/srv/www/";
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          locations = {
+            "Russian" = {
+            };
+          };
         };
         "astraeus.kf0nlr.radio" = {
           root = "/home/Astraeus/www/";

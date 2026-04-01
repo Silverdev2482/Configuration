@@ -10,10 +10,10 @@
   config = lib.mkIf config.games.enable {
     home.packages = with pkgs; [
       steam
-      superTux
+      supertux
+      supertuxkart
       prismlauncher
       inputs.elyprismlauncher.packages.${pkgs.system}.prismlauncher
-      superTuxKart
       lutris
       protonup-qt
     ];

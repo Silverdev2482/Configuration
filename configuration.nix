@@ -39,6 +39,10 @@
   programs = {
     mosh.enable = true;
     fuse.userAllowOther = true;
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+    };
   };
 
   security.wrappers."mount.cifs" = {
@@ -71,6 +75,7 @@
     sshuttle
     fastfetch
     inputs.my-nvf.packages.${pkgs.system}.default
+    inputs.rmxt.packages.${pkgs.system}.default
     btop
     sshfs
     gcc
