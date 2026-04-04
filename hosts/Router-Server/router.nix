@@ -89,10 +89,6 @@ in
             {
               address = addresses.inf.ULAPrefix + "::1";
               prefixLength = 64;
-              dns = [
-                "2606:4700:4700::1111"
-                "2606:4700:4700::1001"
-              ];
               gateways = [
                 {
                   address = "fe80::";
@@ -141,8 +137,8 @@ in
                 ];
               };
               dns = [
+                "10.48.0.1"
                 "1.1.1.1"
-                "1.0.0.1"
               ];
             }
           ];
@@ -153,11 +149,11 @@ in
         ipv6 = {
           addresses = [
             {
-              address = addresses.lan.ULAPrefix + "::1";
+              address = addresses.router.ULAAddress;
               prefixLength = 64;
               dns = [
+                addresses.router.ULAAddress
                 "2606:4700:4700::1111"
-                "2606:4700:4700::1001"
               ];
               gateways = [
                 {

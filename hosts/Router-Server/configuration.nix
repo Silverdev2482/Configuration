@@ -178,7 +178,10 @@
         ";
       };
     };
-    tftpd.enable = true;
+    atftpd = {
+      enable = true;
+      root = "/srv/www/Infrastructure";
+    };
     samba = {
       enable = true;
       settings = {
@@ -235,7 +238,6 @@
     };
     nginx = {
       enable = true;
-      recommendedProxySettings = true;
       virtualHosts = {
         "kf0nlr.radio" = {
           root = "/srv/www/";
@@ -246,6 +248,11 @@
             };
           };
         };
+        "insecure-infrastructure.kf0nlr.radio" = {
+          root = "/srv/www/Infrastructure/";
+          forceSSL = false;
+          useACMEHost = "kf0nlr.radio";
+        };
         "astraeus.kf0nlr.radio" = {
           root = "/home/Astraeus/www/";
           forceSSL = true;
@@ -254,6 +261,7 @@
         "qbittorrent-private.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          recommendedProxySettings = true;
           locations."/" = {
             proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:56080/";
             extraConfig = ''
@@ -275,6 +283,7 @@
         "qbittorrent-public.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          recommendedProxySettings = true;
           locations."/" = {
             proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:8080/";
             extraConfig = ''
@@ -296,6 +305,7 @@
         "jellyfin.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          recommendedProxySettings = true;
           locations."/" = {
             proxyPass = "http://[::1]:8096";
             proxyWebsockets = true;
@@ -314,6 +324,7 @@
         "home-assistant.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          recommendedProxySettings = true;
           locations."/" = {
             proxyPass = "http://[::1]:8123/";
             proxyWebsockets = true;
@@ -332,6 +343,7 @@
         "otbr.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+          recommendedProxySettings = true;
           locations."/" = {
             proxyPass = "http://[::1]:8082/";
             proxyWebsockets = true;

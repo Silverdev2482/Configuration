@@ -35,7 +35,7 @@
       ibs1 = {
         dhcpcd.enable = false;
         ipv6 = {
-          # Doesn't work, nor does kea.
+          # Doesn't work on infiniband, nor does kea.
           corerad = {
             # enable = true;
             interfaceSettings = {
@@ -70,56 +70,37 @@
                   test = "option[175].exists";
                   option-data = [
                     {
-                      name = "tftp-server-name";
-                      data = "10.48.0.1";
-                    }
-                    {
                       name = "boot-file-name";
                       data = "http://boot.netboot.xyz";
                     }
                   ];
                 }
-                #                {
-                #                  name = "HTTPClient";
-                #                  test = "substring(option[vendor-class-identifier].hex,0,10) == 'HTTPClient";
-                #                  boot-file-name = "https://kf0nlr.radio/ipxe.efi";
-                #                  option-data = [
-                #                    {
-                #                      name = "vendor-class-identifier";
-                #                      data = "HTTPClient";
-                #                      always-send = true;
-                #                    }
-                #                  ];
-                #                }
+                {
+                  name = "HTTPClient";
+                  test = "substring(option[60].hex,0,10) == 'HTTPClient'";
+                  option-data = [
+                    {
+                      name = "vendor-class-identifier";
+                      data = "HTTPClient";
+                      always-send = true;
+                    }
+                    {
+                      name = "boot-file-name";
+                      data = "http://insecure-infrastructure.kf0nlr.radio/ipxe.efi";
+                    }
+                  ];
+                }
                 {
                   name = "UEFI clients";
                   test = "option[93].hex == 0x0007 and not option[175].exists";
                   option-data = [
                     {
-                      #                      code = 66;
                       name = "tftp-server-name";
                       data = "10.48.0.1";
                     }
                     {
-                      #                      code = 67;
                       name = "boot-file-name";
                       data = "ipxe.efi";
-                    }
-                  ];
-                }
-                {
-                  name = "BIOS clients";
-                  test = "option[93].hex == 0x0000 and not option[175].exists";
-                  option-data = [
-                    {
-                      code = 66;
-                      name = "tftp-server-name";
-                      data = "10.48.0.1";
-                    }
-                    {
-                      code = 67;
-                      name = "boot-file-name";
-                      data = "undionly.kpxe";
                     }
                   ];
                 }
@@ -141,6 +122,38 @@
                 {
                   autonomous = true;
                   prefix = addresses.lan.PDSpace;
+                }
+              ];
+            };
+          };
+          kea = {
+            enable = true;
+            settings = {
+              lease-database = {
+                name = "/var/lib/private/kea/dhcp6.leases";
+                persist = true;
+                type = "memfile";
+              };
+              client-classes = [
+                {
+                  name = "iPXE";
+                  test = "substring(option[16].hex,0,4) == 'iPXE'";
+                  option-data = [
+                    {
+                      name = "bootfile-url";
+                      data = "http://[${addresses.router.ULAAddress}]/boot.ipxe";
+                    }
+                  ];
+                }
+                {
+                  name = "HTTPClient";
+                  test = "substring(option[16].hex,0,10) == 'HTTPClient' and not substring(option[16].hex,0,4) == 'iPXE'";
+                  option-data = [
+                    {
+                      name = "bootfile-url";
+                      data = "http://[${addresses.router.ULAAddress}]/ipxe.efi";
+                    }
+                  ];
                 }
               ];
             };

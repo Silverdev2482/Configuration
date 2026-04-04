@@ -71,6 +71,9 @@
 
       test      IN      AAAA    ::1
 
+      insecure-infrastructure IN A    10.48.0.1
+      insecure-infrastructure IN AAAA ${addresses.router.ULAAddress}
+
       qbittorrent-public.services IN A    10.48.0.1
       qbittorrent-public.services IN AAAA ${addresses.router.ULAAddress}
 
@@ -82,6 +85,7 @@
 
       home-assistant.services IN A    10.48.0.1
       home-assistant.services IN AAAA ${addresses.router.ULAAddress}
+
 
       otbr.services IN A    10.48.0.1
       otbr.services IN AAAA ${addresses.router.ULAAddress}
