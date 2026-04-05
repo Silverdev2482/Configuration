@@ -5,10 +5,9 @@
   boot = {
     supportedFilesystems = [ "bcachefs" "cifs" "nfs" ];
     loader = {
-      grub = {
+      limine = {
         enable = true;
-        efiSupport = true;
-        device = "nodev";
+        secureBoot.enable = true;
       };
       efi.canTouchEfiVariables = true;
     };
@@ -62,7 +61,7 @@
 
 
   environment.systemPackages = with pkgs; [
-    wgnord
+    sbctl
     cifs-utils
     tftp-hpa
     qperf

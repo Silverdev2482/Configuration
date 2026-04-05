@@ -14,8 +14,8 @@
 {
   boot = {
     loader = {
-      grub = {
-        extraConfig = "serial --speed=115200 --unit=1 --word=8 --parity=no --stop=1; terminal_input serial; terminal_output serial";
+      limine = {
+        extraConfig = "serial: yes";
       };
     };
     kernelModules = [ "lanplus" ];
@@ -261,8 +261,8 @@
         "qbittorrent-private.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
-          recommendedProxySettings = true;
           locations."/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:56080/";
             extraConfig = ''
               allow 127.0.0.0/8; 
@@ -283,8 +283,8 @@
         "qbittorrent-public.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
-          recommendedProxySettings = true;
           locations."/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[" + addresses.netns.ULAPrefix + "::2" + "]:8080/";
             extraConfig = ''
               allow 127.0.0.0/8; 
@@ -305,8 +305,8 @@
         "jellyfin.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
-          recommendedProxySettings = true;
           locations."/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[::1]:8096";
             proxyWebsockets = true;
             extraConfig = ''
@@ -324,8 +324,8 @@
         "home-assistant.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
-          recommendedProxySettings = true;
           locations."/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[::1]:8123/";
             proxyWebsockets = true;
             extraConfig = ''
@@ -343,8 +343,8 @@
         "otbr.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
-          recommendedProxySettings = true;
           locations."/" = {
+            recommendedProxySettings = true;
             proxyPass = "http://[::1]:8082/";
             proxyWebsockets = true;
             extraConfig = ''
