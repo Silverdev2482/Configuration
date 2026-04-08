@@ -61,6 +61,8 @@
 
 
   environment.systemPackages = with pkgs; [
+    tcpdump
+    ipmitool
     sbctl
     cifs-utils
     tftp-hpa

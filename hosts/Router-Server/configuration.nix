@@ -178,10 +178,6 @@
         ";
       };
     };
-    atftpd = {
-      enable = true;
-      root = "/srv/www/Infrastructure";
-    };
     samba = {
       enable = true;
       settings = {

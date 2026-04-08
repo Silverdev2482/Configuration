@@ -151,6 +151,10 @@ in
             {
               address = addresses.router.ULAAddress;
               prefixLength = 64;
+              keaSettings = {
+                # pools = [];
+                # option-data = [];
+              };
               dns = [
                 addresses.router.ULAAddress
                 "2606:4700:4700::1111"
@@ -453,6 +457,7 @@ in
   };
 
   services = {
+    mstpd.enable = true;
     avahi = {
       enable = true;
       hostName = "Router-Server";

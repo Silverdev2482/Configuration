@@ -12,6 +12,16 @@
     enable = true;
     guids = [ "0xf452140300921801" ];
   };
+  systemd.services.rs-tftpd = {
+    description = "tftpd-hpa TFTP server";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+
+    serviceConfig = {
+      ExecStart = ''${pkgs.rs-tftpd}/bin/tftpd -r -d "/srv/www/Infrastructure" -i ::'';
+      Type = "simple";
+    };
+  };
 
   router = {
     interfaces = {
@@ -67,17 +77,17 @@
               client-classes = [
                 {
                   name = "iPXE";
-                  test = "option[175].exists";
+                  test = "substring(option[77].hex,0,4) == 'iPXE'";
                   option-data = [
                     {
                       name = "boot-file-name";
-                      data = "http://boot.netboot.xyz";
+                      data = "https://kf0nlr.radio/Infrastructure/menu.ipxe";
                     }
                   ];
                 }
                 {
-                  name = "HTTPClient";
-                  test = "substring(option[60].hex,0,10) == 'HTTPClient'";
+                  name = "HTTPClient-x86_64";
+                  test = "substring(option[60].hex,0,20) == 'HTTPClient:Arch:0010' and not substring(option[77].hex,0,4) == 'iPXE'";
                   option-data = [
                     {
                       name = "vendor-class-identifier";
@@ -86,13 +96,13 @@
                     }
                     {
                       name = "boot-file-name";
-                      data = "http://insecure-infrastructure.kf0nlr.radio/ipxe.efi";
+                      data = "http://insecure-infrastructure.kf0nlr.radio/ipxe-x86_64.efi";
                     }
                   ];
                 }
                 {
-                  name = "UEFI clients";
-                  test = "option[93].hex == 0x0007 and not option[175].exists";
+                  name = "PXEClient-x86_64";
+                  test = "substring(option[60].hex,0,20) == 'PXEClient:Arch:00007' and not substring(option[77].hex,0,4) == 'iPXE'";
                   option-data = [
                     {
                       name = "tftp-server-name";
@@ -100,7 +110,7 @@
                     }
                     {
                       name = "boot-file-name";
-                      data = "ipxe.efi";
+                      data = "ipxe-x86_64.efi";
                     }
                   ];
                 }
@@ -112,7 +122,7 @@
           corerad = {
             enable = true;
             interfaceSettings = {
-              managed = false;
+              managed = true;
               other_config = true;
               prefix = [
                 {
@@ -137,21 +147,31 @@
               client-classes = [
                 {
                   name = "iPXE";
-                  test = "substring(option[16].hex,0,4) == 'iPXE'";
+                  test = "substring(option[15].hex,2,4) == 'iPXE'";
                   option-data = [
                     {
                       name = "bootfile-url";
-                      data = "http://[${addresses.router.ULAAddress}]/boot.ipxe";
+                      data = "https://kf0nlr.radio/Infrastructure/menu.ipxe";
                     }
                   ];
                 }
                 {
                   name = "HTTPClient";
-                  test = "substring(option[16].hex,0,10) == 'HTTPClient' and not substring(option[16].hex,0,4) == 'iPXE'";
+                  test = "substring(option[16].hex,6,20) == 'HTTPClient:Arch:0010' and not substring(option[15].hex,2,4) == 'iPXE'";
                   option-data = [
                     {
                       name = "bootfile-url";
-                      data = "http://[${addresses.router.ULAAddress}]/ipxe.efi";
+                      data = "http://insecure-infrastructure.kf0nlr.radio/ipxe-x86_64.efi";
+                    }
+                  ];
+                }
+                {
+                  name = "PXEClient";
+                  test = "substring(option[16].hex,6,20) == 'PXEClient:Arch:00007' and not substring(option[15].hex,2,4) == 'iPXE'";
+                  option-data = [
+                    {
+                      name = "bootfile-url";
+                      data = "tftp://[${addresses.router.ULAAddress}]/ipxe-x86_64.efi";
                     }
                   ];
                 }
