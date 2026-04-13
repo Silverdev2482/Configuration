@@ -108,6 +108,10 @@
   };
 
   services = {
+    harmonia.cache = {
+      enable = true;
+      signKeyPaths = [ "/var/lib/harmonia/private-key.pem" ];
+    };
     openthread-border-router = {
       enable = true;
       backboneInterface = "br0";
@@ -208,6 +212,13 @@
           "browseable" = "yes";
           "read only" = "no";
           "guest ok" = "no";
+        };
+        "infrastructure" = {
+          "path" = "/srv/www/Infrastructure";
+          "browseable" = "yes";
+          "read only" = "yes";
+          "guest ok" = "yes";
+          "force user" = "nobody";
         };
       };
     };
@@ -350,6 +361,27 @@
               allow ${addresses.all.PDSpace};
               allow ${addresses.all.ULASpace};
               deny all; # Deny all other IPs
+            '';
+          };
+        };
+        "harmonia.services.kf0nlr.radio" = {
+          forceSSL = true;
+          useACMEHost = "kf0nlr.radio";
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyPass = "http://[::1]:5000";
+            extraConfig = ''
+              allow 127.0.0.0/8; 
+              allow ::1/128;
+              allow ${addresses.all.v4Space};
+              allow ${addresses.all.PDSpace};
+              allow ${addresses.all.ULASpace};
+              deny all; # Deny all other IPs
+
+              proxy_set_header   Host               $proxy_host;
+              proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
+              proxy_set_header   X-Forwarded-Host   $http_host;
+              proxy_set_header   X-Forwarded-Proto  $scheme;
             '';
           };
         };

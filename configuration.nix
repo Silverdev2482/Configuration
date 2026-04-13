@@ -53,10 +53,19 @@
   };
 
   nix = {
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      substituters = [
+        "https://harmonia.services.kf0nlr.radio"
+        "https://cache.nixos.org"
+      ];
+      trusted-public-keys = [
+        "harmonia.services.kf0nlr.radio:LxPOVFxoxpkh4+7Dvb0BGQ2Ny1Cd8ltPZlWvzao/Fco="
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
   };
 
 

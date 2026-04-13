@@ -16,6 +16,18 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqkTEWoMAwLrRj7Ju1NDu/cKhp0yH/qywsKg57mhq0a"
   ];
 
+  services = {
+    udisks2.enable = true;
+    cockpit = {
+      enable = true;
+      openFirewall = true;
+      settings.WebService = {
+        AllowUnencrypted = true;
+        Origins = lib.mkForce "*";
+      };
+    };
+  };
+
   systemd.services.ping-ipv6 = {
     description = "Pings kf0nlr.radio via ipv6";
     wantedBy = [ "multi-user.target" ];
@@ -31,6 +43,7 @@
       StartLimitIntervalSec = 0;
     };
   };
+
 
   systemd.services.ping-ipv4 = {
     description = "Pings kf0nlr.radio via ipv6";

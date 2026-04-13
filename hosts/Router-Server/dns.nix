@@ -86,6 +86,10 @@
       home-assistant.services IN A    10.48.0.1
       home-assistant.services IN AAAA ${addresses.router.ULAAddress}
 
+      harmonia.services IN A    10.48.0.1
+      harmonia.services IN AAAA ${addresses.router.ULAAddress}
+
+
 
       otbr.services IN A    10.48.0.1
       otbr.services IN AAAA ${addresses.router.ULAAddress}
