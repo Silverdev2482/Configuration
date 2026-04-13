@@ -12,7 +12,7 @@
       efi.canTouchEfiVariables = true;
     };
     extraModulePackages = [ ];
-    kernelModules = [ "i2c-dev" "ddcci-driver" ];
+    kernelModules = [ "i2c-dev"];
   };
 
   zramSwap.enable = true;

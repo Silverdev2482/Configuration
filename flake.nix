@@ -3,53 +3,47 @@
 
   inputs = {
     nixpkgs-unpatched.url = "github:nixos/nixpkgs/nixos-unstable";
-#    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    stardustxr.url = "github:StardustXR/server";
-    fan.url = "github:Silverdev2482/fan";
-    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
-    agenix.url = "github:ryantm/agenix";
-    my-nvf.url = "github:silverdev2482/nvf";
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    nixos-router.url = "github:chayleaf/nixos-router";
-    elyprismlauncher.url = "github:ElyPrismLauncher/ElyPrismLauncher";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unpatched";
     };
-    rmxt.url = "github:santoshxshrestha/rmxt";
+    agenix.url = "github:ryantm/agenix";
+
+    nixos-router.url = "github:chayleaf/nixos-router";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
+
     openThreadBoarderRouterInitPatch = {
       url = "https://github.com/nixos/nixpkgs/pull/332296.patch";
       flake = false;
     };
-    mstpdPatch = {
-      url = "https://github.com/nixos/nixpkgs/pull/476636.patch";
-      flake = false;
-    };
+
+    fan.url = "github:Silverdev2482/fan";
+    my-nvf.url = "github:silverdev2482/nvf";
+
+    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
+    stardustxr.url = "github:StardustXR/server";
+    elyprismlauncher.url = "github:ElyPrismLauncher/ElyPrismLauncher";
+    rmxt.url = "github:santoshxshrestha/rmxt";
   };
 
-  outputs = {
-    self,
-    nixpkgs-unpatched,
-    home-manager,
-    agenix,
- #   hyprland,
-    fan,
-    ...
-  } @ inputs: let
+  outputs = { self, nixpkgs-unpatched, home-manager, agenix, fan, ... } @ inputs:
+    let
       system = "x86_64-linux";
+
       nixpkgs = (import nixpkgs-unpatched { inherit system; }).applyPatches {
         name = "nixpkgs";
         src = nixpkgs-unpatched;
         patches = [
           inputs.openThreadBoarderRouterInitPatch
-#          inputs.mstpdPatch
         ];
       };
+
       pkgs = import nixpkgs { inherit system; };
       patchedNixOS = import (nixpkgs + /nixos/lib/eval-config.nix);
-  in {
-#    formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
-    nixosConfigurations = let
+
       mkHost = {
         system ? "x86_64-linux",
         modules ? [],
@@ -74,45 +68,57 @@
               agenix.nixosModules.default
               inputs.nixos-router.nixosModules.default
               inputs.nix-minecraft.nixosModules.minecraft-servers
-              {
-                networking.hostName = hostname;
-              }
+              { networking.hostName = hostname; }
             ]
-            ++ pkgs.lib.optionals ( type == "workstation" ) [
+            ++ pkgs.lib.optionals (type == "workstation") [
               ./workstation.nix
               {
                 home-manager = {
-                  extraSpecialArgs = {inherit inputs hostname username;};
+                  extraSpecialArgs = { inherit inputs hostname username; };
                   useGlobalPkgs = true;
                   useUserPackages = true;
-                  users.${username} = {
-                    imports = [
-                      ./home.nix
-                      ./hosts/${hostname}/home.nix
-                      ./modules/games.nix
-                      ./modules/hyprland/home.nix
-                    ];
-                  };
+                  users.${username}.imports = [
+                    ./home.nix
+                    ./hosts/${hostname}/home.nix
+                    ./modules/games.nix
+                    ./modules/hyprland/home.nix
+                  ];
                 };
               }
+            ]
+            ++ pkgs.lib.optionals (type == "netboot") [
+              "${nixpkgs}/nixos/modules/installer/netboot/netboot.nix"
             ]
             ++ modules;
         };
     in
-      builtins.mapAttrs (hostname: hostConfig: mkHost (hostConfig // {inherit hostname;})) {
-        Desktop-SD = {
+    {
+      # formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
+
+      nixosConfigurations = builtins.mapAttrs
+        (hostname: hostConfig: mkHost (hostConfig // { inherit hostname; }))
+        {
+          Desktop-SD = { };
+          T14G4 = { };
+          T480 = { modules = []; };
+          Router-Server = { type = "server"; };
+          VPN-VPS = { type = "server"; };
+          Netboot = {
+            type = "netboot";
+          };
         };
-        T14G2 = {
+    
+      Netboot =
+        let
+          sys = (mkHost { hostname = "Netboot"; type = "netboot"; }).config.system.build;
+        in
+        pkgs.symlinkJoin {
+          name = "Netboot";
+          paths = [
+            sys.kernel
+            sys.netbootRamdisk
+            sys.netbootIpxeScript
+          ];
         };
-        T480 = {
-          modules = [];
-        };
-        Router-Server = {
-          type = "server";
-        };
-        VPN-VPS = {
-          type = "server";
-        };
-      };
-  };
+    };
 }

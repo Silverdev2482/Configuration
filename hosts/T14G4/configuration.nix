@@ -18,10 +18,8 @@
       enable = true;
     };
   };
-  systemd.services.ModemManager = {
-    wantedBy = [ "multi-user.target" ];
-    scriptArgs = "--debug";
-  };
+
+  networking.modemmanager.enable = true;
 
   fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
     device = "//10.48.0.1/shares/";

@@ -350,18 +350,6 @@
         "type": "github"
       }
     },
-    "mstpdPatch": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-IqaNVtQT+58zr+irlIvsxZG+GLyNMs8YbzCOeYaIGu8=",
-        "type": "file",
-        "url": "https://github.com/nixos/nixpkgs/pull/476636.patch"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://github.com/nixos/nixpkgs/pull/476636.patch"
-      }
-    },
     "my-nvf": {
       "inputs": {
         "nixpkgs": "nixpkgs_4",
@@ -757,7 +745,6 @@
         "elyprismlauncher": "elyprismlauncher",
         "fan": "fan",
         "home-manager": "home-manager_2",
-        "mstpdPatch": "mstpdPatch",
         "my-nvf": "my-nvf",
         "nix-minecraft": "nix-minecraft",
         "nixos-router": "nixos-router",

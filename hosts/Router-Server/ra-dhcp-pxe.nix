@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   inputs24router-lib,
   addresses,
   ...
@@ -22,6 +23,10 @@
       Type = "simple";
     };
   };
+  systemd.tmpfiles.rules = [
+    "L+ /srv/www/Infrastructure/Images/NixOS-x86_64 - - - - ${inputs.self.Netboot}"
+  ];
+
 
   router = {
     interfaces = {
