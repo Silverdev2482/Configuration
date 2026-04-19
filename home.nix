@@ -116,7 +116,6 @@ in
   };
   home.file = {
     ".config/discord/settings.json".source = ./modules/misc/discord.json;
-    ".config/hypr/hyprpaper.conf".source = ./modules/hyprland/hyprpaper.conf;
     ".config/p10k/p10k.zsh".source = ./files/p10k.zsh;
   };
 

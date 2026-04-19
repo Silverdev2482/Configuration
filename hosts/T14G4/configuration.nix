@@ -8,6 +8,13 @@
   boot = {
     extraModprobeConfig = "options thinkpad_acpi fan_control=1";
 #    loader.efi.efiSysMountPoint = "/efi/EFI/";
+    loader.limine = {
+      extraEntries = ''
+        /Windows 11
+          protocol: efi
+          path: uuid(f863546e-c630-46ac-a00b-ae74c5360c3c):/EFI/Microsoft/Boot/bootmgfw.efi
+      '';
+    };
   };
 
 #  time.timeZone = lib.mkForce "US/Mountain";
@@ -19,7 +26,19 @@
     };
   };
 
-  networking.modemmanager.enable = true;
+  networking.modemmanager = {
+    enable = true;
+    fccUnlockScripts = [
+#      {
+#       id = "8086:7560";
+#       path = "/home/Silverdev2482/8086:7560-unlock.sh";
+#     }
+    ];
+  };
+  systemd.services.ModemManager = {
+    wantedBy = [ "multi-user.target" ];
+    scriptArgs = "--debug";
+  };
 
   fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
     device = "//10.48.0.1/shares/";
