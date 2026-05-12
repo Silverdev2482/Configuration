@@ -26,7 +26,7 @@ table inet global {
     iifname wan0 jump inbound_wan
     iifname {
       lo,
-      br0,
+      switch,
       ibs1,
       veth0,
       wan-direct-vpn,
@@ -91,7 +91,7 @@ table inet global {
 
     iifname {
       lo,
-      br0,
+      switch,
       ibs1,
       veth0,
       wan-direct-vpn,
@@ -122,7 +122,7 @@ table inet global {
     type nat hook postrouting priority 200; policy accept;
 
      meta nfproto ipv4 oifname wan0 iifname {
-      br0,
+      switch,
       ibs1,
       wan-direct-vpn,
       russian-vpn
@@ -135,7 +135,7 @@ table inet global {
 # These run before any other chains
 table netdev filter {
   chain ingress {
-    type filter hook ingress devices = { wan0, br0 } priority -500;
+    type filter hook ingress devices = { wan0, switch } priority -500;
 
     # drop fin and syn at the same time
     tcp flags & (fin|syn) == (fin|syn) drop

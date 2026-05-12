@@ -71,11 +71,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1774277543,
-        "narHash": "sha256-7wq3jRTtCvJ9dCwH34OLsdVLZNGmaL2TmpqZTQFHnSw=",
+        "lastModified": 1778526244,
+        "narHash": "sha256-AeakJozWhB4HRBcA4uD68IQFr1JpIXKpuhKqz+cUkx0=",
         "owner": "ElyPrismLauncher",
         "repo": "ElyPrismLauncher",
-        "rev": "b10334b16567a17080cd4217b87dfbbe8ae4d970",
+        "rev": "7e41eed5f22415fae52b0e93cfa7a03e55378286",
         "type": "github"
       },
       "original": {
@@ -284,11 +284,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774738535,
-        "narHash": "sha256-2jfBEZUC67IlnxO5KItFCAd7Oc+1TvyV/jQlR+2ykGQ=",
+        "lastModified": 1778535464,
+        "narHash": "sha256-kkUQYSv70wynJ/DfnGals6r98I6bK3CVNVTN1zbAd7Y=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "769e07ef8f4cf7b1ec3b96ef015abec9bc6b1e2a",
+        "rev": "b659c7ffd40fc9e3bb60d420c79c67e769b9f4ab",
         "type": "github"
       },
       "original": {
@@ -418,11 +418,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1774754558,
-        "narHash": "sha256-0BmAweYRGLnfDtngAM//GeinbTUi3o3Tlp2U1DAH6Ck=",
+        "lastModified": 1778039471,
+        "narHash": "sha256-Arjg44jFcpSqOKK05EIxbKIjhfjou/EGF12COFU+9QA=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "1ee061a6a553b796504087fc172a536381c5ffe4",
+        "rev": "87611ef4788116de05f851920c5958f0c37d5b05",
         "type": "github"
       },
       "original": {
@@ -482,11 +482,11 @@
     },
     "nixpkgs-unpatched": {
       "locked": {
-        "lastModified": 1774386573,
-        "narHash": "sha256-4hAV26quOxdC6iyG7kYaZcM3VOskcPUrdCQd/nx8obc=",
+        "lastModified": 1777954456,
+        "narHash": "sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9+hrDTkDU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "46db2e09e1d3f113a13c0d7b81e2f221c63b8ce9",
+        "rev": "549bd84d6279f9852cae6225e372cc67fb91a4c1",
         "type": "github"
       },
       "original": {
@@ -562,15 +562,15 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1773964973,
-        "narHash": "sha256-d2Q5VNbc91GloTZNByC4u3JS8Tj5BjfuOF19/vuJ/iM=",
-        "rev": "812b3986fd1568f7a858f97fcf425ad996ba7d25",
+        "lastModified": 1774709303,
+        "narHash": "sha256-D4ely1FsBcvtj/qSrNhSWpq+CUZKNiKwJIxpxnfy9o4=",
+        "rev": "8110df5ad7abf5d4c0f6fb0f8f978390e77f9685",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.7849.812b3986fd15/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre971119.8110df5ad7ab/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://channels.nixos.org/nixos-25.11/nixexprs.tar.xz"
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
     "nixpkgs_3": {
@@ -708,18 +708,6 @@
         "type": "github"
       }
     },
-    "openThreadBoarderRouterInitPatch": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-R58fHbz3ni2BA+LDx/1LKlYVtuw6ufhq40mziYPJU7Y=",
-        "type": "file",
-        "url": "https://github.com/nixos/nixpkgs/pull/332296.patch"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://github.com/nixos/nixpkgs/pull/332296.patch"
-      }
-    },
     "rmxt": {
       "inputs": {
         "naersk": "naersk",
@@ -749,7 +737,6 @@
         "nix-minecraft": "nix-minecraft",
         "nixos-router": "nixos-router",
         "nixpkgs-unpatched": "nixpkgs-unpatched",
-        "openThreadBoarderRouterInitPatch": "openThreadBoarderRouterInitPatch",
         "rmxt": "rmxt",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "stardustxr": "stardustxr"
@@ -800,11 +787,11 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1773947604,
-        "narHash": "sha256-jKjzB6Hnw+Ao+StHoWKAahpYCDZ1SiD+kaZqkyeRFQo=",
+        "lastModified": 1777369754,
+        "narHash": "sha256-1elisgpRZHvIef+3cc5Bw1GPrgILwDdUUDxvv91+T9c=",
         "owner": "StardustXR",
         "repo": "server",
-        "rev": "c86af4767110d1f82904c03ae08306178f9970f4",
+        "rev": "08092c3376e809190b349083497fb8c96c637c82",
         "type": "github"
       },
       "original": {

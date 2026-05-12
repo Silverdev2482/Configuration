@@ -71,7 +71,7 @@
         ddns = pkgs.writeScript "ddns.sh" ''
           #!${pkgs.bash}/bin/bash
           echo "Finding IPs"
-          export ipv6=$(${pkgs.iproute2}/bin/ip -6 addr show scope global dev br0 | ${pkgs.gnugrep}/bin/grep inet6 |\
+          export ipv6=$(${pkgs.iproute2}/bin/ip -6 addr show scope global dev ovs0 | ${pkgs.gnugrep}/bin/grep inet6 |\
           ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.gnugrep}/bin/grep -E ^\(2\|3\) | ${pkgs.coreutils}/bin/cut -d/ -f1)
           export ipv4=$(${pkgs.iproute2}/bin/ip -4 addr show scope global dev wan0 | ${pkgs.gnugrep}/bin/grep 'inet ' |\
           ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/cut -d/ -f1)
@@ -112,18 +112,18 @@
       enable = true;
       signKeyPaths = [ "/var/lib/harmonia/private-key.pem" ];
     };
-    openthread-border-router = {
-      enable = true;
-      backboneInterface = "br0";
-      radio = {
-        url = "spinel+hdlc+uart:///tmp/ttyOTBR";
-      };
-      web = {
-        enable = true;
-        listenAddress = "::1";
-        listenPort = 8082;
-      };
-    };
+#    openthread-border-router = {
+#      enable = true;
+#      backboneInterface = "ovs0";
+#      radio = {
+#        url = "spinel+hdlc+uart:///tmp/ttyOTBR";
+#      };
+#      web = {
+#        enable = true;
+#        listenAddress = "::1";
+#        listenPort = 8082;
+#      };
+#    };
     matter-server.enable = true;
     logrotate.checkConfig = false;
     mosquitto = {
@@ -264,6 +264,22 @@
           root = "/home/Astraeus/www/";
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
+        };
+        "kiwix.services.kf0nlr.radio" = {
+          forceSSL = true;
+          useACMEHost = "kf0nlr.radio";
+          locations."/" = {
+            recommendedProxySettings = true;
+            proxyPass = "http://[::1]:8227/";
+            extraConfig = ''
+              allow 127.0.0.0/8; 
+              allow ::1/128;
+              allow ${addresses.all.v4Space};
+              allow ${addresses.all.PDSpace};
+              allow ${addresses.all.ULASpace};
+              deny all; # Deny all other IPs
+            '';
+          };
         };
         "qbittorrent-private.services.kf0nlr.radio" = {
           forceSSL = true;

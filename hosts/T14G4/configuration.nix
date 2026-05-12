@@ -24,26 +24,29 @@
     fprintd = {
       enable = true;
     };
+    geoclue2 = {
+      enable = true;
+    };
   };
 
   networking.modemmanager = {
     enable = true;
     fccUnlockScripts = [
 #      {
-#       id = "8086:7560";
-#       path = "/home/Silverdev2482/8086:7560-unlock.sh";
-#     }
+#        id = "8086:7560";
+#        path = "/home/Silverdev2482/8086:7560-unlock.sh";
+#      }
     ];
   };
   systemd.services.ModemManager = {
-    wantedBy = [ "multi-user.target" ];
-    scriptArgs = "--debug";
+    wantedBy = [ "multi-user.target" ]; # why do we have "" here? I don't know, but its needed.
+    serviceConfig.ExecStart = [ "" "${pkgs.modemmanager}/sbin/ModemManager --debug" ];
   };
 
   fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
     device = "//10.48.0.1/shares/";
     fsType = "cifs";
-    options = [ "gid=100" "uid=1000" "credentials=/home/Silverdev2482/.config/smb-secrets" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
+    options = [ "gid=100,uid=1000,credentials=/home/Silverdev2482/.config/smb-secrets,x-systemd.automount,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s,user,users" ];
   };
 
 

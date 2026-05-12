@@ -83,6 +83,9 @@
       jellyfin.services IN A    10.48.0.1
       jellyfin.services IN AAAA ${addresses.router.ULAAddress}
 
+      kiwix.services IN A    10.48.0.1
+      kiwix.services IN AAAA ${addresses.router.ULAAddress}
+
       home-assistant.services IN A    10.48.0.1
       home-assistant.services IN AAAA ${addresses.router.ULAAddress}
 

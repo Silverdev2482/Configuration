@@ -45,33 +45,8 @@ in
       wan0 = {
         systemdLink.matchConfig.PermanentMACAddress = "d0:50:99:c3:06:da";
         systemdLink.linkConfig.Name = "wan0";
-        dhcpcd = {
-          enable = true;
-          extraConfig = ''
-            noipv6rs
-            waitip 6
-            interface wan0
-              ipv6rs
-              iaid 1
-              ia_na 1
-              ia_pd 2 br0/0/64
-              ia_pd 2 ibs1/1/64
-              ia_pd 2 wan-direct-vpn/3/64
-              ia_pd 2 russian-vpn/4/64
-          '';
-        };
         ipv4.enableForwarding = true;
         ipv6.enableForwarding = true;
-      };
-      lan0 = {
-        systemdLink.matchConfig.PermanentMACAddress = "d0:50:99:c3:06:d9";
-        systemdLink.linkConfig.Name = "lan0";
-        bridge = "br0";
-      };
-      lan1 = {
-        systemdLink.matchConfig.PermanentMACAddress = "f4:52:14:92:18:02";
-        systemdLink.linkConfig.Name = "lan1";
-        bridge = "br0";
       };
       ibs1 = {
         systemdLink.matchConfig.MACAddress = "80:00:02:18:fe:80:00:00:00:00:00:00:f4:52:14:03:00:92:18:01";
@@ -99,7 +74,7 @@ in
           ];
         };
       };
-      br0 = {
+      switch = {
         ipv4 = {
           enableForwarding = true;
           addresses = [
@@ -229,7 +204,7 @@ in
           # Allows me to do traffic shaping on ingress
           ip link add wan0-ifb type ifb
           ip link set wan0-ifb up
-          tc qdisc add dev br0 handle ffff: ingress
+          tc qdisc add dev switch handle ffff: ingress
           sudo tc filter add dev wan0 parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev wan0-ifb
 
           # Ingress traffic shaping
@@ -243,7 +218,28 @@ in
     };
   };
 
+  systemd.network.links = {
+    "lan0" = {
+      matchConfig.PermanentMACAddress = "d0:50:99:c3:06:d9";
+      linkConfig.Name = "lan0";
+    };
+  };
+
   networking = {
+    vswitches = {
+      ovs = {
+        extraOvsctlCmds = ''
+          set Bridge ovs rstp_enable=true other_config:rstp-priority=8192
+        '';
+        interfaces = {
+          switch = {
+            type = "internal";
+            vlan = 10;
+          };
+          ens1d1 = { };
+        };
+      };
+    };
     wireguard.interfaces = {
       commercial-vpn = {
         privateKeyFile = config.age.secrets.commercial-vpn-private-key.path;
@@ -374,9 +370,9 @@ in
             )
             [
               {
-                # My T14 Gen 2
+                # My T14 Gen 4
                 suffix = 2;
-                publicKey = "2dOocXRe97olfY7mol2Zzgs+Xf37hdU9fZ61OPKC1TY=";
+                publicKey = "OrZulZ8QT2GUHcD+0DYA/49qM8EKClHPi9gCSB1AFFI=";
               }
               {
                 suffix = 3;
@@ -462,7 +458,7 @@ in
       enable = true;
       hostName = "Router-Server";
       allowInterfaces = [
-        "br0"
+        "switch"
         "veth0"
       ];
       publish = {

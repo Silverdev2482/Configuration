@@ -40,7 +40,7 @@
               ipv6rs
               iaid 1
               ia_na 1
-              ia_pd 2 br0/0/64
+              ia_pd 2 switch/0/64
               ia_pd 2 ibs1/1/64
               ia_pd 2 wan-direct-vpn/3/64
               ia_pd 2 russian-vpn/4/64
@@ -68,7 +68,7 @@
           };
         };
       };
-      br0 = {
+      switch = {
         dhcpcd.enable = false;
         ipv4 = {
           kea = {

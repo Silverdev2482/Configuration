@@ -14,7 +14,7 @@
       supertuxkart
       prismlauncher
       inputs.elyprismlauncher.packages.${pkgs.system}.prismlauncher
-      lutris
+#      lutris
       protonup-qt
     ];
   };

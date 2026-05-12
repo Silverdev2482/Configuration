@@ -7,6 +7,7 @@
 {
 
   virtualisation = {
+    vswitch.enable = true;
     libvirtd = {
       enable = true;
       qemu.swtpm.enable = true;
@@ -158,7 +159,10 @@
     };
     coolercontrol.enable = true;
     calls.enable = true;
-    wireshark.enable = true;
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+    };
     steam.enable = true;
     dconf.enable = true;
   };

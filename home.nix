@@ -176,7 +176,7 @@ in
     keepassxc
     qpwgraph
     easyeffects
-#    freecad
+    freecad
     gimp
     prusa-slicer
     element-desktop

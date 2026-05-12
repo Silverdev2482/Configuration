@@ -13,11 +13,11 @@
     nixos-router.url = "github:chayleaf/nixos-router";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
-
-    openThreadBoarderRouterInitPatch = {
-      url = "https://github.com/nixos/nixpkgs/pull/332296.patch";
-      flake = false;
-    };
+# Obselete, for refrense
+#    openThreadBoarderRouterInitPatch = {
+#      url = "https://github.com/nixos/nixpkgs/pull/332296.patch";
+#      flake = false;
+#    };
 
     fan.url = "github:Silverdev2482/fan";
     my-nvf.url = "github:silverdev2482/nvf";
@@ -37,7 +37,7 @@
         name = "nixpkgs";
         src = nixpkgs-unpatched;
         patches = [
-          inputs.openThreadBoarderRouterInitPatch
+#          inputs.openThreadBoarderRouterInitPatch
         ];
       };
 
