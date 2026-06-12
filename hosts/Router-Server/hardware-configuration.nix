@@ -28,6 +28,7 @@
   fileSystems."/" = {
     device = "UUID=45d68ff9-93cc-49f5-b2c4-0fc19324d196";
     fsType = "bcachefs";
+#    options = [ "x-systemd.wants=bcachefs-wait-devices@45d68ff9-93cc-49f5-b2c4-0fc19324d196.service" ];
   };
 
   fileSystems."/boot" = {

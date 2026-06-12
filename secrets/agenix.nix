@@ -7,6 +7,7 @@ let
     "commercial-vpn-private-key"
     "bind-acme-key"
     "acme-key"
+    "camera-password"
   ];
   
   secrets = lib.recursiveUpdate

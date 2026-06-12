@@ -17,6 +17,7 @@ let
     "commercial-vpn-preshared-key.age"
     "acme-key.age"
     "bind-acme-key.age"
+    "camera-password.age"
   ];
 
 in  builtins.listToAttrs (map (name: { inherit name; value = { inherit publicKeys; }; }) secrets)

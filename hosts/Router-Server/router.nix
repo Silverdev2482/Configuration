@@ -40,6 +40,25 @@ in
     kernelModules = [ "sch_cake" ];
   };
 
+  systemd.services = {
+    siit0-translator = {
+      description = "464xlat(plat) translator";
+      wantedBy = [ "network-setup.service" "network.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = "true";
+        ExecStart = pkgs.writeShellScript "siit0-up.sh" ''
+          ${pkgs.iproute2}/bin/ip link add siit0 type ipxlat
+          ${pkgs.iproute2}/bin/ip route add 10.48.66.1 dev siit0
+          ${pkgs.iproute2}/bin/ip route add 64:ff9b::/96 dev siit0
+        '';
+        ExecStop = pkgs.writeShellScript "siit0-down.sh" ''
+          ${pkgs.iproute2}/bin/ip link delete siit0
+        '';
+      };
+    };
+  };
+
   router = {
     interfaces = {
       wan0 = {
@@ -55,7 +74,7 @@ in
           addresses = [
             {
               address = addresses.inf.v4Prefix + ".1";
-              prefixLength = 18;
+              prefixLength = 24;
             }
           ];
         };
@@ -85,14 +104,9 @@ in
                 pools = [ { pool = "10.48.1.2 - 10.48.1.254"; } ];
                 reservations = [
                   {
-                    # Old minecraft server
-                    hw-address = "48:4D:7E:F9:06:7A";
+                    # Smart home radio
+                    hw-address = "00:4b:12:96:6f:7f";
                     ip-address = "10.48.0.128";
-                  }
-                  {
-                    # I think the raspberry pi for my ender 3?
-                    hw-address = "DC:A6:32:14:6F:83";
-                    ip-address = "10.48.0.129";
                   }
                   {
                     # Printer
@@ -144,6 +158,38 @@ in
           ];
         };
       };
+
+      camera = {
+        ipv4 = {
+          addresses = [
+            {
+              address = addresses.camera.v4Address;
+              prefixLength = addresses.camera.v4Length;
+              dns = [
+                addresses.camera.v4Address
+              ];
+            }
+          ];
+        };
+        ipv6 = {
+          addresses = [
+            {
+              address = addresses.camera.ULAAddress;
+              prefixLength = 64;
+              dns = [
+                addresses.camera.ULAAddress
+              ];
+              gateways = [
+                {
+                  address = "fe80::";
+                  prefixLength = 64;
+                }
+              ];
+            }
+          ];
+        };
+      };
+
 
       veth0 = {
         ipv4 = {
@@ -235,6 +281,14 @@ in
           switch = {
             type = "internal";
             vlan = 10;
+          };
+          iot = {
+            type = "internal";
+            vlan = 20;
+          };
+          camera = {
+            type = "internal";
+            vlan = 30;
           };
           ens1d1 = { };
         };
@@ -448,8 +502,6 @@ in
     };
 
     hostName = "Router-Server";
-    firewall.enable = false;
-    nftables.enable = true;
   };
 
   services = {

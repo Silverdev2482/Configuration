@@ -160,7 +160,6 @@
     coolercontrol.enable = true;
     calls.enable = true;
     wireshark = {
-      enable = true;
       package = pkgs.wireshark;
     };
     steam.enable = true;
@@ -168,7 +167,8 @@
   };
 
   environment.systemPackages = with pkgs; [
-
+    
+    ipmitool
     virt-manager
     linux-wifi-hotspot
     tuigreet

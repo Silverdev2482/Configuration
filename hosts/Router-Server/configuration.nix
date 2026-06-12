@@ -18,7 +18,7 @@
         extraConfig = "serial: yes";
       };
     };
-    kernelModules = [ "lanplus" ];
+    kernelModules = [ "lanplus" "ipxlat" ];
     kernelParams = [
       "console=tty1"
       "console=ttyS1,115200n8"
@@ -59,71 +59,106 @@
   };
 
   systemd = {
-    timers.ddns = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "*:0/5";
-        AccuracySec = "5sec";
-      };
-    };
-    services.ddns =
-      let
-        ddns = pkgs.writeScript "ddns.sh" ''
-          #!${pkgs.bash}/bin/bash
-          echo "Finding IPs"
-          export ipv6=$(${pkgs.iproute2}/bin/ip -6 addr show scope global dev ovs0 | ${pkgs.gnugrep}/bin/grep inet6 |\
-          ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.gnugrep}/bin/grep -E ^\(2\|3\) | ${pkgs.coreutils}/bin/cut -d/ -f1)
-          export ipv4=$(${pkgs.iproute2}/bin/ip -4 addr show scope global dev wan0 | ${pkgs.gnugrep}/bin/grep 'inet ' |\
-          ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/cut -d/ -f1)
-
-          echo "ipv6 is: ''${ipv6}"
-          echo "ipv4 is: ''${ipv4}"
-
-          echo "Updating DNS"
-
-          ${pkgs.curl}/bin/curl "https://dyn.dns.he.net/nic/update" -d "hostname=dyn.kf0nlr.radio" -d "password=$(</srv/secrets/hurricane-electric.pass)" -d "myip=''${ipv6}"
-          echo
-          ${pkgs.curl}/bin/curl "https://dyn.dns.he.net/nic/update" -d "hostname=dyn.kf0nlr.radio" -d "password=$(</srv/secrets/hurricane-electric.pass)" -d "myip=''${ipv4}"
-          echo
-
-          echo "Exiting"
-        '';
-      in
-      {
+    services = {
+      irssi = {
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network.target" ];
+        description = "Start irssi in tmux session";
         serviceConfig = {
-          ExecStart = ddns;
+          User = "Silverdev2482";
+          Type = "forking";
+          ExecStart = ''${pkgs.tmux}/bin/tmux new-session -s irssi -d ${pkgs.irssi}/bin/irssi'';
+          ExecStop = ''${pkgs.tmux}/bin/tmux kill-session -t irssi'';
         };
       };
-    services.irssi = {
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
-      description = "Start irssi in tmux session";
-      serviceConfig = {
-        User = "Silverdev2482";
-        Type = "forking";
-        ExecStart = ''${pkgs.tmux}/bin/tmux new-session -s irssi -d ${pkgs.irssi}/bin/irssi'';
-        ExecStop = ''${pkgs.tmux}/bin/tmux kill-session -t irssi'';
-      };
+      go2rtc.serviceConfig.EnvironmentFile = config.age.secrets.camera-password.path;
+      frigate.serviceConfig.EnvironmentFile = config.age.secrets.camera-password.path;
+      jellyfin.serviceConfig.Environment = [
+        "JELLYFIN_PublishedServerUrl=http://jellyfin.services.kf0nlr.radio"
+      ];
     };
   };
 
+
+
   services = {
+    frigate = {
+      enable = true;
+      hostname = "frigate.services.kf0nlr.radio";
+      checkConfig = false;
+      settings = {
+        cameras = {
+          Backyard = {
+            ffmpeg.inputs = [
+              {
+                path = "rtsp://127.0.0.1:8554/Backyard";
+                roles = [
+                  "detect"
+                  "audio"
+                ];
+                input_args = "preset-rtsp-restream";
+              }
+              {
+                path = "rtsp://127.0.0.1:8554/Backyard_High_Quality";
+                input_args = "preset-rtsp-restream";
+                roles = [
+                  "record"
+                ];
+              }
+            ];
+            live.streams = {
+              "Default" = "Backyard";
+              "High_Quality" = "Backyard_High_Quality";
+            };
+            onvif = {
+              host = "10.48.1.10";
+              port = 8000;
+              user = "admin";
+              password = "{FRIGATE_CAMERA_PASSWORD}";
+            };
+          };
+        };
+      };
+    };
+    go2rtc = {
+      enable = true;
+      settings = {
+      networking.ipv6.enable = true;
+      rtsp.listen = "[::]:8554";
+        streams = {
+          Backyard = [
+            "rtsp://admin:\${CAMERA_PASSWORD}@10.48.1.10:554/h264Preview_01_main"
+            "onvif://admin:\${CAMERA_PASSWORD}@10.48.1.10:8000"
+            "ffmpeg:Backyard#audio=opus"
+          ];
+          Backyard_High_Quality = [
+            "rtsp://admin:\${CAMERA_PASSWORD}@10.48.1.10:554"
+            "onvif://admin:\${CAMERA_PASSWORD}@10.48.1.10:8000"
+            "ffmpeg:Backyard_High_Quality#audio=opus"
+          ];
+        };
+      };
+    };
     harmonia.cache = {
       enable = true;
       signKeyPaths = [ "/var/lib/harmonia/private-key.pem" ];
+      settings = {
+        bind = "[::]:5102";
+        priority = 20;
+      };
     };
-#    openthread-border-router = {
-#      enable = true;
-#      backboneInterface = "ovs0";
-#      radio = {
-#        url = "spinel+hdlc+uart:///tmp/ttyOTBR";
-#      };
-#      web = {
-#        enable = true;
-#        listenAddress = "::1";
-#        listenPort = 8082;
-#      };
-#    };
+    openthread-border-router = {
+      enable = true;
+      backboneInterfaces = [ "switch" ];
+      radio = {
+        url = "spinel+hdlc+uart:///tmp/ttyOTBR";
+      };
+      web = {
+        enable = true;
+        listenAddress = "::1";
+        listenPort = 8082;
+      };
+    };
     matter-server.enable = true;
     logrotate.checkConfig = false;
     mosquitto = {
@@ -156,6 +191,12 @@
         # Recommended for fast zlib compression
         # https://www.home-assistant.io/integrations/isal
         "isal"
+      ];
+      customComponents = with pkgs.home-assistant-custom-components; [
+        frigate
+      ];
+      customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+        advanced-camera-card
       ];
       config = {
         # Includes dependencies for a basic setup
@@ -326,7 +367,6 @@
           };
         };
         "jellyfin.services.kf0nlr.radio" = {
-          forceSSL = true;
           useACMEHost = "kf0nlr.radio";
           locations."/" = {
             recommendedProxySettings = true;
@@ -380,12 +420,24 @@
             '';
           };
         };
+        "frigate.services.kf0nlr.radio" = {
+          forceSSL = true;
+          useACMEHost = "kf0nlr.radio";
+          extraConfig = ''
+            allow 127.0.0.0/8; 
+            allow ::1/128;
+            allow ${addresses.all.v4Space};
+            allow ${addresses.all.PDSpace};
+            allow ${addresses.all.ULASpace};
+            deny all; # Deny all other IPs
+          '';
+        };
         "harmonia.services.kf0nlr.radio" = {
           forceSSL = true;
           useACMEHost = "kf0nlr.radio";
           locations."/" = {
             recommendedProxySettings = true;
-            proxyPass = "http://[::1]:5000";
+            proxyPass = "http://[::1]:5102";
             extraConfig = ''
               allow 127.0.0.0/8; 
               allow ::1/128;
@@ -433,7 +485,7 @@
       before = [ "otbr-agent.service" ];
       path = [ pkgs.socat ];
       script = ''
-        socat -d pty,raw,echo=0,link=/tmp/ttyOTBR,ignoreeof "tcp:10.48.1.34:6638"
+        socat -d pty,raw,echo=0,link=/tmp/ttyOTBR,ignoreeof "tcp:10.48.0.128:6638"
       '';
     };
     qBittorrent-public = {

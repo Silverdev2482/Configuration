@@ -71,11 +71,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1778526244,
-        "narHash": "sha256-AeakJozWhB4HRBcA4uD68IQFr1JpIXKpuhKqz+cUkx0=",
+        "lastModified": 1780747496,
+        "narHash": "sha256-d/RZVoxzhG3DMqtr2FkyA8HTKAQiVMqGe9hNItd3dKw=",
         "owner": "ElyPrismLauncher",
         "repo": "ElyPrismLauncher",
-        "rev": "7e41eed5f22415fae52b0e93cfa7a03e55378286",
+        "rev": "513b857d0701dd1e019589f315619c83c4c43a1a",
         "type": "github"
       },
       "original": {
@@ -284,11 +284,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778535464,
-        "narHash": "sha256-kkUQYSv70wynJ/DfnGals6r98I6bK3CVNVTN1zbAd7Y=",
+        "lastModified": 1780679734,
+        "narHash": "sha256-KmRNvpNOb7QEORa06bVgjW9kITcx0VhsI7w0vhmZyD8=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b659c7ffd40fc9e3bb60d420c79c67e769b9f4ab",
+        "rev": "b2b7db486e06e098711dc291bb25db82850e1d16",
         "type": "github"
       },
       "original": {
@@ -333,6 +333,18 @@
         "owner": "PrismLauncher",
         "repo": "libnbtplusplus",
         "type": "github"
+      }
+    },
+    "lutris-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-Qfv5Ca/upyrnT/BG1AqN4oKeJP+67ZODeiZrUZU2C6E=",
+        "type": "file",
+        "url": "https://github.com/nixos/nixpkgs/pull/515956.patch"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/nixos/nixpkgs/pull/515956.patch"
       }
     },
     "mnw": {
@@ -418,11 +430,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1778039471,
-        "narHash": "sha256-Arjg44jFcpSqOKK05EIxbKIjhfjou/EGF12COFU+9QA=",
+        "lastModified": 1780375694,
+        "narHash": "sha256-TznzgYVONg28KiSFB2rVdf/eLVIMtEQOxKt13Kzyrp8=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "87611ef4788116de05f851920c5958f0c37d5b05",
+        "rev": "e6f8bec35104ca5955efe73742da58d2823684f7",
         "type": "github"
       },
       "original": {
@@ -482,11 +494,11 @@
     },
     "nixpkgs-unpatched": {
       "locked": {
-        "lastModified": 1777954456,
-        "narHash": "sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9+hrDTkDU=",
+        "lastModified": 1780243769,
+        "narHash": "sha256-x5UQuRsH3MqI0U9afaXSNqzTPSeZlRLvFAav2Ux1pNw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "549bd84d6279f9852cae6225e372cc67fb91a4c1",
+        "rev": "331800de5053fcebacf6813adb5db9c9dca22a0c",
         "type": "github"
       },
       "original": {
@@ -562,11 +574,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1774709303,
-        "narHash": "sha256-D4ely1FsBcvtj/qSrNhSWpq+CUZKNiKwJIxpxnfy9o4=",
-        "rev": "8110df5ad7abf5d4c0f6fb0f8f978390e77f9685",
+        "lastModified": 1778443072,
+        "narHash": "sha256-rNDJzV2JTV5SUTwv1cgKZYMdyoUYU9/YfegSaUf3QfY=",
+        "rev": "da5ad661ba4e5ef59ba743f0d112cbc30e474f32",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre971119.8110df5ad7ab/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre995699.da5ad661ba4e/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -733,6 +745,7 @@
         "elyprismlauncher": "elyprismlauncher",
         "fan": "fan",
         "home-manager": "home-manager_2",
+        "lutris-patch": "lutris-patch",
         "my-nvf": "my-nvf",
         "nix-minecraft": "nix-minecraft",
         "nixos-router": "nixos-router",

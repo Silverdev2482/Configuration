@@ -25,9 +25,20 @@ rec {
     ULASpace = all.ULAPrefix + "::/64";
   };
 
+  camera = {
+    v4Prefix = "10.48.65";
+    v4Space = camera.v4Prefix + ".0/24";
+    v4Address = camera.v4Prefix + ".1";
+    v4Length = 24;
+
+    ULAPrefix = all.ULAPrefix + ":10";
+    ULASpace = all.ULAPrefix + ":10::/64";
+    ULAAddress = all.ULAPrefix + ":10::1";
+  };
+
   inf = {
     v4Prefix = "10.48.64";
-    v4Space = inf.v4Prefix + ".0/18";
+    v4Space = inf.v4Prefix + ".0/24";
 
     PDPrefix = all.PDPrefix + "1";
     PDSpace = all.PDPrefix + "1::/64";

@@ -3,17 +3,36 @@
 {
 
   boot = {
-    supportedFilesystems = [ "bcachefs" "cifs" "nfs" ];
+    supportedFilesystems = [ "bcachefs" "vfat" "cifs" "nfs" ];
     loader = {
       limine = {
         enable = true;
         secureBoot.enable = true;
+        maxGenerations = 8;
       };
       efi.canTouchEfiVariables = true;
     };
     extraModulePackages = [ ];
-    kernelModules = [ "i2c-dev"];
+    kernelModules = [ "i2c-dev" ];
+    kernelPatches = [
+      {
+        name = "ipxlat";
+        patch = ./Introducing-ipxlat-a-stateless-IPv4-IPv6-translation-device.patch;
+      }
+    ];
+    kernelPackages = pkgs.linuxKernel.packages.linux_7_0;
+    initrd = {
+      systemd = {
+        emergencyAccess = true;
+      };
+    };
   };
+
+  networking = {
+    firewall.enable = false;
+    nftables.enable = true;
+  };
+
 
   zramSwap.enable = true;
 
@@ -36,6 +55,11 @@
   };
 
   programs = {
+    wireshark.enable = true;
+    ccache = {
+      enable = true;
+      packageNames = [ "linux" ];
+    };
     mosh.enable = true;
     fuse.userAllowOther = true;
     zsh = {
@@ -54,6 +78,11 @@
 
   nix = {
     settings = {
+      extra-sandbox-paths = [ "/var/cache/ccache" ];
+      trusted-users = [
+        "root"
+        "Silverdev2482"
+      ];
       substituters = [
         "https://harmonia.services.kf0nlr.radio"
         "https://cache.nixos.org"
@@ -69,7 +98,42 @@
   };
 
 
+
+  nixpkgs.overlays = [
+#    (final: prev: {
+#      openldap =
+#        if prev.stdenv.hostPlatform.system == "i686-linux" then
+#          prev.openldap.overrideAttrs (oldAttrs: {
+#            doCheck = false;
+#          })
+#        else
+#          prev.openldap;
+#    })
+    (final: prev: {
+      xdg-desktop-portal = prev.xdg-desktop-portal.overrideAttrs (old: {
+        doCheck = false;
+      });
+    })
+    (final: prev: {
+      linuxKernel = prev.linuxKernel // {
+        packages = builtins.mapAttrs (name: lp:
+          lp.extend (lpFinal: lpPrev: {
+            kernel = lpPrev.kernel.override {
+              stdenv = prev.ccacheStdenv;
+            };
+          })
+        ) prev.linuxKernel.packages;
+      };
+    })
+  ];
+
+
+
+
+
+
   environment.systemPackages = with pkgs; [
+    ripgrep
     tcpdump
     ipmitool
     sbctl

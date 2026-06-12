@@ -185,6 +185,47 @@
           };
         };
       };
+
+      camera = {
+        dhcpcd.enable = false;
+        ipv4 = {
+          kea = {
+            enable = true;
+            settings = {
+              lease-database = {
+                name = "/var/lib/private/kea/dhcp4.leases";
+                persist = true;
+                type = "memfile";
+              };
+            };
+          };
+        };
+        ipv6 = {
+          corerad = {
+            enable = true;
+            interfaceSettings = {
+              managed = true;
+              other_config = true;
+              prefix = [
+                {
+                  autonomous = true;
+                  prefix = addresses.camera.ULASpace;
+                }
+              ];
+            };
+          };
+          kea = {
+            enable = true;
+            settings = {
+              lease-database = {
+                name = "/var/lib/private/kea/dhcp6.leases";
+                persist = true;
+                type = "memfile";
+              };
+            };
+          };
+        };
+      };
     };
   };
 

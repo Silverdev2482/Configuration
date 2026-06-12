@@ -19,6 +19,10 @@
 #      flake = false;
 #    };
 
+    lutris-patch = {
+      url = "https://github.com/nixos/nixpkgs/pull/515956.patch";
+      flake = false;
+    };
     fan.url = "github:Silverdev2482/fan";
     my-nvf.url = "github:silverdev2482/nvf";
 
@@ -38,6 +42,7 @@
         src = nixpkgs-unpatched;
         patches = [
 #          inputs.openThreadBoarderRouterInitPatch
+          inputs.lutris-patch
         ];
       };
 

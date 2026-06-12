@@ -136,7 +136,6 @@ in
     inputs.fan.packages.${pkgs.system}.fan
     glow
     poppler-utils
-    libsForQt5.breeze-icons
     localsend
     mmsd-tng
     gitui
@@ -188,8 +187,7 @@ in
     wireguard-tools
     mimalloc
     winetricks
-    #winePackages.waylandFull
-    wine64Packages.waylandFull
+    wineWow64Packages.waylandFull
     glibc
     bluez
     blueman

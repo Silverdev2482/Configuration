@@ -5,11 +5,20 @@
 { inputs, config, pkgs, lib, ... }:
 
 {
-  nixpkgs.config.rocmSupport = true;
-
   fileSystems."/home/Silverdev2482/Mount/Router-Server" = {
     device = "10.48.64.1:/srv/shares";
     fsType = "nfs";
     options = [ "proto=rdma" "vers=3" "acl" ];
+  };
+
+  nix.settings = {
+    secret-key-files = [ "/etc/nix/private-key.pem" ];
+  };
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+    ];
   };
 }
