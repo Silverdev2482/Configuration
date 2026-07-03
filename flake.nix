@@ -68,12 +68,17 @@
               ./modules
               ./configuration.nix
               ./users.nix
-              ./secrets/agenix.nix
               home-manager.nixosModules.home-manager
               agenix.nixosModules.default
               inputs.nixos-router.nixosModules.default
               inputs.nix-minecraft.nixosModules.minecraft-servers
               { networking.hostName = hostname; }
+            ]
+            ++ pkgs.lib.optionals (type != "netboot") [
+              ./secrets/agenix.nix
+              ({ config, agenix, ... }: {
+                users.users.Silverdev2482.hashedPasswordFile = config.age.secrets.user-password.path;
+              })
             ]
             ++ pkgs.lib.optionals (type == "workstation") [
               ./workstation.nix

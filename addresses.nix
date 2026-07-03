@@ -1,5 +1,8 @@
 rec {
 
+  mkIPv6Pool = prefix: "${prefix}::1:0 - ${prefix}:ffff:ffff:ffff:0000";
+
+
   all = {
     v4Space = "10.48.0.0/16";
 
@@ -12,17 +15,27 @@ rec {
   router = {
     v4PublicAddress = "208.107.235.245";
 
-    PDAddress = lan.PDPrefix + "::1";
-    PDSpace = lan.PDPrefix + "::/61";
-    ULAAddress = lan.ULAPrefix + "::1";
-    ULASpace = lan.ULAPrefix + "::/52";
+    PDAddress = switch.PDPrefix + "::1";
+    PDSpace = switch.PDPrefix + "::/61";
+    ULAAddress = switch.ULAPrefix + "::1";
+    ULASpace = switch.ULAPrefix + "::/52";
   };
 
-  lan = {
+  switch = {
+    v4Prefix = "10.48.";
+    v4Space = switch.v4Prefix + "0.0/18";
+    v4Address = switch.v4Prefix + "0.1";
+    v4Length = 18;
+    v4Pool = "10.48.1.17 - 10.48.1.254";
+
     PDPrefix = all.PDPrefix + "0";
     PDSpace = all.PDPrefix + "0::/64";
+    PDAddress = switch.PDPrefix + "::1";
+    PDPool = mkIPv6Pool switch.PDPrefix;
     ULAPrefix = all.ULAPrefix + ":0"; # Redundant if you use ::, but kept for caution.
     ULASpace = all.ULAPrefix + "::/64";
+    ULAAddress = switch.ULAPrefix + "::1";
+    ULAPool = mkIPv6Pool switch.ULAPrefix;
   };
 
   camera = {
@@ -30,10 +43,12 @@ rec {
     v4Space = camera.v4Prefix + ".0/24";
     v4Address = camera.v4Prefix + ".1";
     v4Length = 24;
+    v4Pool = "10.48.65.17 - 10.48.65.239";
 
     ULAPrefix = all.ULAPrefix + ":10";
     ULASpace = all.ULAPrefix + ":10::/64";
     ULAAddress = all.ULAPrefix + ":10::1";
+    ULAPool = mkIPv6Pool camera.ULAPrefix;
   };
 
   inf = {

@@ -21,10 +21,6 @@
     networkmanager.enable = true; # Enable networking
     networkmanager.wifi.backend = "iwd";
   };
-  services.clatd = {
-    enable = true;
-    enableNetworkManagerIntegration = true;
-  };
 
   home-manager.backupFileExtension = "hmbak";
 
@@ -37,6 +33,33 @@
         "olm-3.2.16"
       ];
     };
+    overlays = [
+      (self: super: {
+        networkmanager = super.networkmanager.overrideAttrs (old: {
+          version = "1.57.4-dev";
+          src = super.fetchurl {
+            url = old.src.url;
+            hash = "sha256-ThYPO/0YsmFSc2Qol1ZAoQb1qdtjPRg+rvxpUzKe0sA=";
+          };
+          buildInputs = old.buildInputs ++ [ super.libbpf ];
+          nativeBuildInputs = old.nativeBuildInputs ++ [
+            super.llvmPackages.clang-unwrapped
+            super.bpftools
+            super.llvmPackages.bintools
+            super.linuxHeaders
+          ];
+          preBuild = (old.preBuild or "") + ''
+            export CPATH="${super.linuxHeaders}/include:${super.glibc.dev}/include''${CPATH:+:$CPATH}"
+          '';
+          patches = [
+            (super.replaceVars ./fix-paths.patch {
+              inherit (super) ethtool gnused;
+              runtimeShell = super.runtimeShell;
+            })
+          ] ++ builtins.filter (p: ! lib.hasInfix "fix-paths" (toString p)) old.patches;
+        });
+      })
+    ];
   };
 
   nix = {
@@ -170,7 +193,6 @@
     
     ipmitool
     virt-manager
-    linux-wifi-hotspot
     tuigreet
     networkmanagerapplet
     fuse

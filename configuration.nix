@@ -100,6 +100,15 @@
 
 
   nixpkgs.overlays = [
+   (final: prev: {
+      bcachefs-tools = prev.bcachefs-tools.overrideAttrs (finalAttrs: previousAttrs: {
+        version = "1.38.7";
+        src = previousAttrs.src.override {
+          tag = "v${finalAttrs.version}";
+          hash = nixpkgs.lib.fakeHash;
+        };
+      });
+    })
 #    (final: prev: {
 #      openldap =
 #        if prev.stdenv.hostPlatform.system == "i686-linux" then

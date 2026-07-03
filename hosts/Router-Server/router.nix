@@ -49,6 +49,7 @@ in
         RemainAfterExit = "true";
         ExecStart = pkgs.writeShellScript "siit0-up.sh" ''
           ${pkgs.iproute2}/bin/ip link add siit0 type ipxlat
+          ${pkgs.iproute2}/bin/ip link set siit0 up
           ${pkgs.iproute2}/bin/ip route add 10.48.66.1 dev siit0
           ${pkgs.iproute2}/bin/ip route add 64:ff9b::/96 dev siit0
         '';
@@ -98,37 +99,8 @@ in
           enableForwarding = true;
           addresses = [
             {
-              address = "10.48.0.1";
-              prefixLength = 18;
-              keaSettings = {
-                pools = [ { pool = "10.48.1.2 - 10.48.1.254"; } ];
-                reservations = [
-                  {
-                    # Smart home radio
-                    hw-address = "00:4b:12:96:6f:7f";
-                    ip-address = "10.48.0.128";
-                  }
-                  {
-                    # Printer
-                    hw-address = "F0:A6:54:88:DE:8F";
-                    ip-address = "10.48.0.130";
-                  }
-                  {
-                    # Access point
-                    hw-address = "D4:5D:64:7B:6B:60";
-                    ip-address = "10.48.0.64";
-                  }
-                  {
-                    # Access point
-                    hw-address = "0C:9D:92:2C:4D:10";
-                    ip-address = "10.48.0.65";
-                  }
-                ];
-              };
-              dns = [
-                "10.48.0.1"
-                "1.1.1.1"
-              ];
+              address = addresses.switch.v4Address;
+              prefixLength = addresses.switch.v4Length;
             }
           ];
           routes = [
@@ -140,10 +112,6 @@ in
             {
               address = addresses.router.ULAAddress;
               prefixLength = 64;
-              keaSettings = {
-                # pools = [];
-                # option-data = [];
-              };
               dns = [
                 addresses.router.ULAAddress
                 "2606:4700:4700::1111"
@@ -165,9 +133,6 @@ in
             {
               address = addresses.camera.v4Address;
               prefixLength = addresses.camera.v4Length;
-              dns = [
-                addresses.camera.v4Address
-              ];
             }
           ];
         };

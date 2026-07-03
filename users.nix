@@ -21,7 +21,6 @@
           "nginx"
           "wireshark"
         ];
-        hashedPasswordFile = config.age.secrets.user-password.path;
       };
 
       Julie = {

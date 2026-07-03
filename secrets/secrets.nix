@@ -18,6 +18,8 @@ let
     "acme-key.age"
     "bind-acme-key.age"
     "camera-password.age"
+    "bind-dhcp-ddns-key.age"
+    "kea-dhcp-ddns-key.age"
   ];
 
 in  builtins.listToAttrs (map (name: { inherit name; value = { inherit publicKeys; }; }) secrets)
