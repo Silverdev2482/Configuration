@@ -34,31 +34,31 @@
       ];
     };
     overlays = [
-      (self: super: {
-        networkmanager = super.networkmanager.overrideAttrs (old: {
-          version = "1.57.4-dev";
-          src = super.fetchurl {
-            url = old.src.url;
-            hash = "sha256-ThYPO/0YsmFSc2Qol1ZAoQb1qdtjPRg+rvxpUzKe0sA=";
-          };
-          buildInputs = old.buildInputs ++ [ super.libbpf ];
-          nativeBuildInputs = old.nativeBuildInputs ++ [
-            super.llvmPackages.clang-unwrapped
-            super.bpftools
-            super.llvmPackages.bintools
-            super.linuxHeaders
-          ];
-          preBuild = (old.preBuild or "") + ''
-            export CPATH="${super.linuxHeaders}/include:${super.glibc.dev}/include''${CPATH:+:$CPATH}"
-          '';
-          patches = [
-            (super.replaceVars ./fix-paths.patch {
-              inherit (super) ethtool gnused;
-              runtimeShell = super.runtimeShell;
-            })
-          ] ++ builtins.filter (p: ! lib.hasInfix "fix-paths" (toString p)) old.patches;
-        });
-      })
+#      (self: super: {
+#        networkmanager = super.networkmanager.overrideAttrs (old: {
+#          version = "1.57.4-dev";
+#          src = super.fetchurl {
+#            url = old.src.url;
+#            hash = "sha256-ThYPO/0YsmFSc2Qol1ZAoQb1qdtjPRg+rvxpUzKe0sA=";
+#          };
+#          buildInputs = old.buildInputs ++ [ super.libbpf ];
+#          nativeBuildInputs = old.nativeBuildInputs ++ [
+#            super.llvmPackages.clang-unwrapped
+#            super.bpftools
+#            super.llvmPackages.bintools
+#            super.linuxHeaders
+#          ];
+#          preBuild = (old.preBuild or "") + ''
+#            export CPATH="${super.linuxHeaders}/include:${super.glibc.dev}/include''${CPATH:+:$CPATH}"
+#          '';
+#          patches = [
+#            (super.replaceVars ./fix-paths.patch {
+#              inherit (super) ethtool gnused;
+#              runtimeShell = super.runtimeShell;
+#            })
+#          ] ++ builtins.filter (p: ! lib.hasInfix "fix-paths" (toString p)) old.patches;
+#        });
+#      })
     ];
   };
 
@@ -93,7 +93,7 @@
     fwupd.enable = true;
     dbus.enable = true;
     greetd = {
-      enable = true;
+#      enable = true;
       restart = false;
       settings = {
         default_session = {
@@ -192,6 +192,7 @@
   environment.systemPackages = with pkgs; [
     
     ipmitool
+    android-tools
     virt-manager
     tuigreet
     networkmanagerapplet

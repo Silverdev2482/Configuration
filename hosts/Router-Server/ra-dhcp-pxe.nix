@@ -213,18 +213,20 @@
             server-ip = "::1";
           };
           ddns-qualifying-suffix = "hosts.kf0nlr.radio.";
+          option-data = [
+            {
+              code = 23;
+              data = addresses.switch.ULAAddress + ", 2606:4700:4700::1111";
+              name = "dns-servers";
+              space = "dhcp6";
+            }
+          ];
           subnet6 = [
             {
-              id = 10;
+              # Idk make them same as vlans, except I have multiple per one.
+              # Not sure if this is a great idea or overcomplicated.
+              id = (( 0 * 4096 ) + 10);
               interface = "switch";
-              option-data = [
-                {
-                  code = 23;
-                  data = addresses.switch.ULAAddress + ", 2606:4700:4700::1111";
-                  name = "dns-servers";
-                  space = "dhcp6";
-                }
-              ];
               pools = [
                 {
                   pool = addresses.switch.ULAPool;
@@ -233,17 +235,18 @@
               subnet = addresses.switch.ULASpace;
             }
             {
-              id = 20;
-              interface = "camera";
-              option-data = [
+              id = (( 1 * 4096 ) + 10);
+              interface = "switch";
+              pools = [
                 {
-                  code = 23;
-                  csv-format = true;
-                  data = addresses.camera.ULAAddress;
-                  name = "dns-servers";
-                  space = "dhcp6";
+                  pool = addresses.switch.PDPool;
                 }
               ];
+              subnet = addresses.switch.PDSpace;
+            }
+            {
+              id = (( 0 * 4096 ) + 20);
+              interface = "camera";
               pools = [
                 {
                   pool = addresses.camera.ULAPool;

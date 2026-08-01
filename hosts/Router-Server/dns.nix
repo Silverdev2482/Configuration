@@ -173,25 +173,25 @@
         otbr.services  IN CNAME @
       '';
     };
-    "bind/zones/hosts.kf0nlr.radio.internal.zone" = {
-      enable = true;
-      user = "named";
-      group = "named";
-      mode = "0644";
-      text = ''
-        $ORIGIN hosts.kf0nlr.radio.
-        $TTL      300 ; 5 min
-        @         IN      SOA         kf0nlr.radio. fidget1206.gmail.com. (
-                          2025081701  ; Serial
-                          3h          ; Refresh after 3 hours
-                          1h          ; Retry after 1 hour
-                          1w          ; Expire after 1 week
-                          1h )        ; Negative caching TTL of 1 day
-        @ IN NS kf0nlr.radio.
-
-        Router-Server IN CNAME kf0nlr.radio.
-      '';
-    };
+#    "bind/zones/hosts.kf0nlr.radio.internal.zone" = {
+#      enable = true;
+#      user = "named";
+#      group = "named";
+#      mode = "0644";
+#      text = ''
+#        $ORIGIN hosts.kf0nlr.radio.
+#        $TTL      300 ; 5 min
+#        @         IN      SOA         kf0nlr.radio. fidget1206.gmail.com. (
+#                          2025081701  ; Serial
+#                          3h          ; Refresh after 3 hours
+#                          1h          ; Retry after 1 hour
+#                          1w          ; Expire after 1 week
+#                          1h )        ; Negative caching TTL of 1 day
+#        @ IN NS kf0nlr.radio.
+#
+#        Router-Server IN CNAME kf0nlr.radio.
+#      '';
+#    };
 #    "bind/zones/rdns.ula.zone" = {
 #      enable = true;
 #      user = "named";

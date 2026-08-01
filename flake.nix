@@ -19,10 +19,8 @@
 #      flake = false;
 #    };
 
-    lutris-patch = {
-      url = "https://github.com/nixos/nixpkgs/pull/515956.patch";
-      flake = false;
-    };
+    nixpkgs-ai-edge-litert.url = "github:NixOS/nixpkgs/567a49d1913ce81ac6e9582e3553dd90a955875f";
+
     fan.url = "github:Silverdev2482/fan";
     my-nvf.url = "github:silverdev2482/nvf";
 
@@ -42,7 +40,6 @@
         src = nixpkgs-unpatched;
         patches = [
 #          inputs.openThreadBoarderRouterInitPatch
-          inputs.lutris-patch
         ];
       };
 
@@ -110,6 +107,7 @@
         {
           Desktop-SD = { };
           T14G4 = { };
+          G614FM = { };
           T480 = { modules = []; };
           Router-Server = { type = "server"; };
           VPN-VPS = { type = "server"; };

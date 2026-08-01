@@ -20,7 +20,7 @@
         patch = ./Introducing-ipxlat-a-stateless-IPv4-IPv6-translation-device.patch;
       }
     ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_7_0;
+    kernelPackages = pkgs.linuxPackages_latest;
     initrd = {
       systemd = {
         emergencyAccess = true;
@@ -100,24 +100,35 @@
 
 
   nixpkgs.overlays = [
-   (final: prev: {
-      bcachefs-tools = prev.bcachefs-tools.overrideAttrs (finalAttrs: previousAttrs: {
-        version = "1.38.7";
-        src = previousAttrs.src.override {
-          tag = "v${finalAttrs.version}";
-          hash = nixpkgs.lib.fakeHash;
-        };
-      });
-    })
-#    (final: prev: {
-#      openldap =
-#        if prev.stdenv.hostPlatform.system == "i686-linux" then
-#          prev.openldap.overrideAttrs (oldAttrs: {
-#            doCheck = false;
-#          })
-#        else
-#          prev.openldap;
+#  (final: prev: {
+#      bcachefs-tools = prev.bcachefs-tools.overrideAttrs (finalAttrs: previousAttrs: {
+#        version = "1.38.7";
+#        src = previousAttrs.src.override {
+#          tag = "v${finalAttrs.version}";
+#          hash = "sha256-ESViHKyaFRSxE3huxpxQT/F43CeYRTmV9vZFjUUBB5U=";
+#        };
+#        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+#          inherit (finalAttrs) src;
+#          hash = "sha256-RKHyFehskZITIOO+FT9AF91KPnMlcBAkQANBtdSRMMk=";
+#        };
+#      });
 #    })
+    (final: prev: let
+      pinnedPkgs = import inputs.nixpkgs-ai-edge-litert { inherit (prev.stdenv.hostPlatform) system; };
+    in {
+      frigate = prev.frigate.override {
+        python313Packages = pinnedPkgs.python313Packages;
+      };
+    })
+
+
+
+
+
+
+    (final: prev: {
+        pnpm_10_29_2 = final.pnpm_10;
+    })
     (final: prev: {
       xdg-desktop-portal = prev.xdg-desktop-portal.overrideAttrs (old: {
         doCheck = false;

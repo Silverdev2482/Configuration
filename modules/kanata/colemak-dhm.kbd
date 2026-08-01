@@ -2,9 +2,8 @@
   process-unmapped-keys yes
     linux-dev-names-exclude (
     /dev/input/by-id/usb-ZMK_Project_Silverdactyl_FE2B83C970F7C19F-event-kbd
-    /dev/input/event16
   )
-  linux-device-detect-mode keyboard-only
+  linux-device-detect-mode keyboard-mice
 )
 
 (deflocalkeys-linux
